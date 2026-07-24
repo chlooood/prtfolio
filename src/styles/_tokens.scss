@@ -1,0 +1,19 @@
+:root {
+  // Color palette (pulled from Etta's Acres)
+  --ea-cream:      #f5f1e8;
+  --ea-sage:       #6f7554;
+  --ea-sage-deep:  #565b40;
+  --ea-gold:       #e8c36c;
+  --ea-teal:       #33544a;
+  --ea-charcoal:   #3a3a34;
+  --ea-taupe:      #b7a98f;
+  --ea-white:      #fffdf8;
+
+  // Typography
+  --ea-font-display: 'Cormorant Garamond', Georgia, serif;
+  --ea-font-script:  'Dancing Script', cursive;
+  --ea-font-body:    'Jost', system-ui, sans-serif;
+
+  // Spacing rhythm
+  --ea-section-y: clamp(3rem, 8vw, 7rem);
+}

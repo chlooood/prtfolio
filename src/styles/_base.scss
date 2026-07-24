@@ -1,0 +1,28 @@
+body {
+  font-family: var(--ea-font-body);
+  background-color: var(--ea-cream);
+  color: var(--ea-charcoal);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ea-font-display);
+  letter-spacing: 0.01em;
+}
+
+// Reusable type accents matching the mock
+.font-display { font-family: var(--ea-font-display); }
+.font-script  { font-family: var(--ea-font-script); line-height: 1.1; }
+
+.eyebrow {
+  font-family: var(--ea-font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: 0.75rem;
+  color: var(--ea-taupe);
+}
+
+// Respect users who ask for less motion (a11y baseline)
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
