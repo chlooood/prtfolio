@@ -1,0 +1,60 @@
+[
+  {
+    "date": "2026-08-13",
+    "macrostructure": "Ecosystem Index",
+    "theme": "custom (tuned) \u2014 revision 3: hallmark editorial type + painted backdrop",
+    "genre": "editorial",
+    "nav": "N1a wordmark + links (was N6 masthead)",
+    "footer": "Ft6 letter close",
+    "enrichment": "Tier B hand-built SVG \u2014 painted sky/meadow backdrop + seed-to-bloom dandelion layer",
+    "type": {
+      "display": "Fraunces",
+      "body": "Switzer",
+      "note": "Cormorant Garamond + wide-tracked caps read as a restaurant menu; Cormorant sits in hallmark's luxury row, not editorial."
+    },
+    "axes": {
+      "paper-band": "light",
+      "display-style": "high-contrast-serif",
+      "accent-hue": "chromatic-other (deep teal-green)"
+    },
+    "deviations": [
+      "motion.md bans parallax, scroll-scrubbed animation and infinite loops; the dandelion layer is a user-directed exception, mitigated with impulse-decay physics (not scrub), randomised respawn, opacity <= 0.38, and a hard off-switch under prefers-reduced-motion.",
+      "Saturated sky/meadow tokens exist solely for the backdrop layer and never touch text; composited at BACKDROP.intensity."
+    ],
+    "brief": "Chloe Dacey \u00b7 UBC BUCS personal portfolio + blog"
+  },
+  {
+    "date": "2026-08-13",
+    "macrostructure": "Ecosystem Index",
+    "theme": "custom (tuned) \u2014 revision 2: softened editorial",
+    "genre": "editorial",
+    "nav": "N6 masthead",
+    "footer": "Ft6 letter close",
+    "enrichment": "Tier B hand-built SVG (dandelion seed layer)",
+    "axes": {
+      "paper-band": "light",
+      "display-style": "high-contrast-serif",
+      "accent-hue": "chromatic-other (deep teal-green)"
+    },
+    "deviations": [
+      "motion.md bans parallax, scroll-scrubbed animation, and infinite loops; the dandelion layer is a user-directed exception, mitigated with impulse-decay physics (not scrub), randomised respawn (no perceptible cycle), opacity < 0.3, and a hard off-switch under prefers-reduced-motion.",
+      "motion.md prefers IntersectionObserver over scroll listeners; a passive scroll listener is used to sample impulse only, with all animation driven by rAF."
+    ],
+    "brief": "Chloe Dacey \u00b7 UBC BUCS personal portfolio + blog"
+  },
+  {
+    "date": "2026-08-12",
+    "macrostructure": "Ecosystem Index",
+    "theme": "custom (tuned) \u2014 revision 1",
+    "genre": "editorial",
+    "nav": "N6 masthead",
+    "footer": "Ft6 letter close",
+    "enrichment": "none (typography only)",
+    "axes": {
+      "paper-band": "light",
+      "display-style": "high-contrast-serif",
+      "accent-hue": "chromatic-other (deep teal-green)"
+    },
+    "brief": "Chloe \u00b7 UBC BUCS personal portfolio + blog"
+  }
+]

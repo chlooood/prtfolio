@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Vendored agent skills — reinstall with `npx skills add` (see skills-lock.json).
+# .claude/skills is a symlink into .agents, so both need ignoring.
+.agents/
+.claude/skills/
+
+# Machine-local Claude Code settings; launch.json is shared
+.claude/settings.local.json

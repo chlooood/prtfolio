@@ -1,0 +1,422 @@
+/* Hallmark · genre: editorial · macrostructure: Ecosystem Index · route: custom (tuned)
+ * revision 2 — "softened editorial": lighter paper, softer rules, radii on
+ * filled surfaces only, warmer body face. Swiss grid and hairlines retained.
+ * vibe: "warm archival, Swiss grid, hand-set restraint"
+ * paper: oklch(96.8% 0.014 86) · accent: oklch(40% 0.09 165) · ink: oklch(26% 0.013 100)
+ * display: Cormorant Garamond · body: Satoshi
+ * nav: N6 masthead · footer: Ft6 letter close
+ * enrichment: Tier B hand-built SVG (dandelion seed layer)
+ * axes: light / high-contrast-serif / chromatic-other (deep teal-green)
+ */
+
+@import 'tailwindcss';
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Design tokens
+ * The palette is a tuned OKLCH translation of the existing cream/sage/gold
+ * hex set — same colours, expressed in a perceptual space so the L-steps
+ * between paper, rule, and ink are even rather than eyeballed.
+ * ────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* ── Paper (light band, tinted warm toward the amber anchor) ──
+     Lifted ~1.3% L from the first pass: the page reads airier without
+     losing the cream cast that makes it feel like paper rather than screen. */
+  --color-paper: oklch(96.8% 0.014 86); /* cream — page ground */
+  --color-paper-2: oklch(98.6% 0.009 88); /* raised surface */
+  --color-paper-3: oklch(94.2% 0.017 85); /* recessed band */
+
+  /* ── Ink ──
+     Softened from near-black: 26% L keeps body copy comfortably above
+     contrast minimums while dropping the severity of true ink. */
+  /* Measured against the painted backdrop composited at BACKDROP.intensity,
+     not just against bare paper — body copy sits over sky and meadow, so the
+     backdrop is part of every contrast calculation. At the previous values
+     `muted` scored 4.26 on paper and 2.67 over deep sky, failing WCAG AA for
+     the 12px labels, dates and rail titles it's used on. `ink-2` came down
+     alongside it to keep three separable tiers rather than two.
+     Now: ink 14.2 / 8.9 · ink-2 9.9 / 6.2 · muted 7.7 / 4.8 (paper / worst). */
+  --color-ink: oklch(26% 0.013 100); /* body + display text */
+  --color-ink-2: oklch(36% 0.015 100); /* secondary text */
+  --color-muted: oklch(42% 0.019 92); /* de-emphasised / captions */
+
+  /* ── Rules (hairlines — the editorial divider language) ──
+     Lightened so the grid is felt rather than drawn. */
+  --color-rule: oklch(85% 0.018 86);
+  --color-rule-2: oklch(91% 0.014 86);
+
+  /* ── Accent · the single signal colour, kept under 5% of any viewport ── */
+  --color-accent: oklch(40% 0.09 165); /* deep teal-green */
+  --color-accent-deep: oklch(31% 0.075 165);
+
+  /* ── Secondary chromatics (decorative only — never text on paper) ── */
+  --color-sage: oklch(49% 0.045 118);
+  --color-gold: oklch(82% 0.11 88); /* underlines, marks, ornaments */
+
+  /* ── Painted backdrop ──
+     Pulled toward the reference painting: a teal-to-deep-blue sky over a
+     lime meadow. These are the only saturated values in the system, and they
+     never touch text — they exist purely for the backdrop layer, which is
+     composited at BACKDROP.intensity. */
+  --color-sky: oklch(72% 0.13 218);
+  --color-sky-deep: oklch(52% 0.16 254);
+  --color-sky-pale: oklch(93% 0.05 205);
+  --color-meadow: oklch(84% 0.16 128);
+  --color-meadow-light: oklch(92% 0.15 112);
+  --color-meadow-deep: oklch(66% 0.14 138);
+
+  /* Dandelion bloom — the one genuinely saturated yellow in the system. */
+  --color-bloom: oklch(85% 0.17 92);
+  --color-bloom-deep: oklch(75% 0.16 78);
+
+  /* ── Book cloth ──
+     Spine colours for the shelf. Deliberately the most saturated block in the
+     palette: the shelf is the one place on the page that should read as a
+     physical object rather than as paper. All six are dark enough to carry
+     paper-coloured text at AA — they're backgrounds for type, not decoration. */
+  --color-spine-1: oklch(40% 0.075 165); /* deep teal */
+  --color-spine-2: oklch(44% 0.095 40); /* rust */
+  --color-spine-3: oklch(37% 0.05 120); /* forest */
+  --color-spine-4: oklch(48% 0.1 72); /* ochre */
+  --color-spine-5: oklch(36% 0.06 305); /* plum */
+  --color-spine-6: oklch(38% 0.055 250); /* indigo */
+
+  /* The plank they stand on. */
+  --color-shelf: oklch(58% 0.045 62);
+  --color-shelf-edge: oklch(48% 0.05 58);
+
+  /* Focus ring: teal, not gold. Gold on cream is ~1.4:1, well under the 3:1
+     WCAG 2.4.11 requires of a focus indicator; teal clears it at 7.4:1. */
+  --color-focus: oklch(40% 0.09 165);
+
+  /* ── Type · hallmark's editorial pairing ──
+     Cormorant Garamond sat in hallmark's *luxury* row, and paired with
+     letterspaced caps it read as a restaurant menu. Fraunces is the editorial
+     answer: same warmth, but with weight and presence instead of delicacy. */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Switzer', 'Avenir Next', system-ui, -apple-system, sans-serif;
+
+  /* ── Radius · the "rounder" half of the brief ──
+     Applied only to filled or bordered surfaces. Rules and grid lines stay
+     straight; softening those would dissolve the Swiss structure entirely.
+
+     Names avoid single letters on purpose: `rounded-l` / `rounded-s` already
+     mean "left" / "start" in Tailwind, so a `--radius-l` token silently
+     produces a lopsided corner instead of a large one. */
+  --radius-tight: 0.25rem;
+  --radius-soft: 0.5rem;
+  --radius-card: 0.875rem;
+  --radius-round: 1.5rem;
+  --radius-full: 999px;
+
+  /* Fluid type scale — clamp() so the Swiss grid holds at every width */
+  --text-display: clamp(3.2rem, 8vw, 6.5rem);
+  --text-display-s: clamp(2.6rem, 5.5vw, 4.25rem);
+  --text-4xl: clamp(2rem, 3.6vw, 3rem);
+  --text-3xl: clamp(1.6rem, 2.6vw, 2.25rem);
+  --text-2xl: clamp(1.35rem, 1.9vw, 1.65rem);
+  --text-xl: 1.2rem;
+  --text-base: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+
+  /* Label type. Dropped from 0.24em: wide-tracked caps is the other half of
+     what made this read as a menu. 0.13em still reads as a label without the
+     fine-dining affect. */
+  --tracking-label: 0.13em;
+  --tracking-wordmark: -0.015em;
+
+  /* ── Space · 4-pt scale ── */
+  --spacing-3xs: 0.25rem;
+  --spacing-2xs: 0.5rem;
+  --spacing-xs: 0.75rem;
+  --spacing-s: 1rem;
+  --spacing-m: 1.5rem;
+  --spacing-l: 2.5rem;
+  --spacing-xl: 4rem;
+  --spacing-2xl: 6rem;
+  --spacing-3xl: clamp(5rem, 12vw, 9rem); /* between major sections */
+
+  /* ── Motion · one orchestrated entrance, quiet easings, no bounce ── */
+  --ease-out-quiet: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 620ms;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Base
+ * ────────────────────────────────────────────────────────────────────────── */
+html {
+  /* Sticky masthead must not cover in-page anchor targets. */
+  scroll-padding-top: 6rem;
+  scroll-behavior: smooth;
+  /* `clip`, never `hidden` — `hidden` on the root kills position:sticky. */
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  /* Global rule: display type is always roman. Italic headers are the single
+     most reliable AI tell — emphasis is carried by weight and accent instead. */
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.018em;
+  /* Fraunces' own axes do the softening: SOFT rounds the terminals, and a
+     touch of WONK lets its idiosyncratic forms through. This is the knob that
+     makes the display face feel hand-drawn rather than institutional. */
+  font-variation-settings: 'SOFT' 42, 'WONK' 1;
+  /* Long words in display sizes must break rather than force a scrollbar. */
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Dandelion mark — the growth cycle beside the wordmark.
+ * One 11s loop: the crown opens outward arc by arc, holds as a full clock,
+ * then clears and begins again. Arc N is delayed by N × 0.5s, which is what
+ * makes it read as opening rather than switching on.
+ * ────────────────────────────────────────────────────────────────────────── */
+.dl-mark {
+  width: 1.85em;
+  height: 1.95em;
+  flex: none;
+  color: var(--color-sage);
+}
+
+/* Act one · each arc of the clock opens outward, then the whole clock clears
+   to make room for the bloom. */
+@keyframes dl-arc {
+  0%,
+  2% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  12%,
+  22% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  30%,
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+/* Act two · the yellow flower opens in the clock's place and then holds for
+   most of the cycle. A dandelion is a yellow flower first and a seed clock
+   second, so yellow is the resting state — the clock is the brief prelude. */
+@keyframes dl-blossom {
+  0%,
+  26% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-28deg);
+  }
+  44%,
+  95% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.92) rotate(5deg);
+  }
+}
+
+.dl-mark__arc,
+.dl-mark__bloom {
+  /* Both acts pivot on the receptacle, not the box centre — the stem must not
+     appear to swing. */
+  transform-origin: 50% 35%;
+}
+
+/* Both acts start 6s into the cycle via a negative delay, so the mark is
+   already the open yellow flower on first paint. Starting at 0 would greet
+   every visitor with a bare stem for the first second. */
+.dl-mark__arc {
+  /* Arc 0 is the parachute the seed flies with, so it leads; the rest follow. */
+  animation: dl-arc 11s var(--ease-out-quiet) infinite;
+  animation-delay: calc(var(--arc) * 0.45s - 6s);
+  opacity: 0;
+}
+
+.dl-mark__bloom {
+  animation: dl-blossom 11s var(--ease-out-quiet) infinite;
+  animation-delay: -6s;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No cycle — the mark simply is the finished yellow flower. */
+  .dl-mark__arc {
+    animation: none;
+    opacity: 0;
+  }
+
+  .dl-mark__bloom {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Long-form prose · applied only to rendered MDX so markup elsewhere stays
+ * unopinionated. Editorial register: asymmetric measure, hairline rules,
+ * drop cap on the opening paragraph, gold mark for emphasis.
+ * ────────────────────────────────────────────────────────────────────────── */
+.prose-editorial {
+  max-width: 68ch;
+  font-size: var(--text-xl);
+  line-height: 1.72;
+  color: var(--color-ink-2);
+}
+
+.prose-editorial > * + * {
+  margin-top: var(--spacing-m);
+}
+
+.prose-editorial h2 {
+  margin-top: var(--spacing-xl);
+  font-size: var(--text-3xl);
+  color: var(--color-ink);
+}
+
+.prose-editorial h3 {
+  margin-top: var(--spacing-l);
+  font-size: var(--text-2xl);
+  color: var(--color-ink);
+}
+
+/* Drop cap opens the article — one ornament, used once. */
+.prose-editorial > p:first-child::first-letter {
+  float: left;
+  margin-right: 0.08em;
+  padding-top: 0.06em;
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: 3.6em;
+  font-weight: 500;
+  line-height: 0.78;
+}
+
+.prose-editorial a {
+  color: var(--color-accent);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color var(--duration-fast) var(--ease-out-quiet);
+}
+
+.prose-editorial a:hover {
+  color: var(--color-accent-deep);
+}
+
+.prose-editorial blockquote {
+  padding-left: var(--spacing-m);
+  border-left: 1px solid var(--color-gold);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: 1.45;
+}
+
+.prose-editorial ul,
+.prose-editorial ol {
+  padding-left: 1.4em;
+}
+
+.prose-editorial ul {
+  list-style: none;
+}
+
+/* Hairline dashes instead of bullets — quieter, and matches the rule language. */
+.prose-editorial ul > li::before {
+  content: '—';
+  display: inline-block;
+  width: 1.4em;
+  margin-left: -1.4em;
+  color: var(--color-rule);
+}
+
+.prose-editorial ol {
+  list-style: decimal;
+}
+
+.prose-editorial li + li {
+  margin-top: var(--spacing-2xs);
+}
+
+.prose-editorial code {
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-tight);
+  background-color: var(--color-paper-3);
+  font-size: 0.86em;
+}
+
+.prose-editorial pre {
+  overflow-x: auto;
+  padding: var(--spacing-m);
+  border: 1px solid var(--color-rule-2);
+  border-radius: var(--radius-card);
+  background-color: var(--color-paper-2);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.prose-editorial pre code {
+  padding: 0;
+  background: none;
+}
+
+.prose-editorial img {
+  max-width: 100%;
+  height: auto;
+}
+
+.prose-editorial hr {
+  border: 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
