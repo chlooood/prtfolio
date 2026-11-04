@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Site mark: a dandelion in bloom. Drawn rather than sourced.
+       A dandelion flower is a dense head of narrow strap-shaped ray florets —
+       not a daisy with a few broad petals — so this is two rings of many short
+       rays. The stem and leaf are what keep it from reading as a sunburst at
+       16px. -->
+  <rect width="64" height="64" rx="14" fill="#f7f3ea" />
+
+  <!-- stem -->
+  <path d="M32 30 Q34 44 30.5 58" stroke="#6f7554" stroke-width="2.4" stroke-linecap="round" fill="none" />
+  <!-- leaves -->
+  <path d="M32.5 44 Q23 40.5 19 45 Q25 49.5 32.5 45 Z" fill="#6f7554" opacity="0.75" />
+  <path d="M31.6 51 Q38 48.6 41 52 Q36 55.4 31.6 52 Z" fill="#6f7554" opacity="0.55" />
+
+  <!-- outer ray florets -->
+  <g stroke="#c99a2e" stroke-width="2.6" stroke-linecap="round">
+    <line x1="32" y1="26" x2="32" y2="9" /><line x1="34.5" y1="26.4" x2="39.4" y2="10.2" />
+    <line x1="36.7" y1="27.6" x2="46" y2="13.6" /><line x1="38.4" y1="29.4" x2="51.1" y2="19" />
+    <line x1="39.4" y1="31.7" x2="54.1" y2="25.8" /><line x1="39.6" y1="34.2" x2="54.6" y2="33.2" />
+    <line x1="39" y1="36.6" x2="52.5" y2="40.3" /><line x1="37.7" y1="38.6" x2="48.2" y2="46.3" />
+    <line x1="26.3" y1="38.6" x2="15.8" y2="46.3" /><line x1="25" y1="36.6" x2="11.5" y2="40.3" />
+    <line x1="24.4" y1="34.2" x2="9.4" y2="33.2" /><line x1="24.6" y1="31.7" x2="9.9" y2="25.8" />
+    <line x1="25.6" y1="29.4" x2="12.9" y2="19" /><line x1="27.3" y1="27.6" x2="18" y2="13.6" />
+    <line x1="29.5" y1="26.4" x2="24.6" y2="10.2" />
+  </g>
+
+  <!-- inner ray florets, offset so the head reads dense -->
+  <g stroke="#f2c14e" stroke-width="2.4" stroke-linecap="round">
+    <line x1="32" y1="28" x2="35.5" y2="14.5" /><line x1="35.4" y1="29" x2="43.9" y2="18.2" />
+    <line x1="37.6" y1="31.4" x2="49.6" y2="25.2" /><line x1="38.1" y1="34.6" x2="50.4" y2="36.6" />
+    <line x1="36.6" y1="37.4" x2="44.6" y2="45.4" /><line x1="33.6" y1="38.9" x2="35.6" y2="49.8" />
+    <line x1="30.4" y1="38.9" x2="28.4" y2="49.8" /><line x1="27.4" y1="37.4" x2="19.4" y2="45.4" />
+    <line x1="25.9" y1="34.6" x2="13.6" y2="36.6" /><line x1="26.4" y1="31.4" x2="14.4" y2="25.2" />
+    <line x1="28.6" y1="29" x2="20.1" y2="18.2" /><line x1="32" y1="28" x2="28.5" y2="14.5" />
+  </g>
+
+  <!-- receptacle -->
+  <circle cx="32" cy="32.5" r="7.2" fill="#e0a92f" />
+  <circle cx="32" cy="32.5" r="4" fill="#f2c14e" />
+</svg>

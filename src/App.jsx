@@ -1,17 +1,32 @@
+import { Route, Routes } from 'react-router';
 import Layout from './components/layout/Layout.jsx';
+import Home from './pages/Home.jsx';
+import Experience from './pages/Experience.jsx';
+import Writing from './pages/Writing.jsx';
+import Post from './pages/Post.jsx';
 
 function App() {
   return (
     <Layout>
-      <section className="container text-center" style={{ paddingBlock: 'var(--ea-section-y)' }}>
-        <p className="eyebrow mb-3">Style, Recipes &amp; Stories</p>
-        <p className="font-script text-primary fs-1 mb-1">Welcome, Friend!</p>
-        <h1 className="display-2 mb-3">Etta's Acres</h1>
-        <p className="lead text-secondary">
-          Baseline layout architecture is live. Tokens, fonts, and Bootstrap are wired.
-        </p>
-      </section>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/experience" element={<Experience />} />
+        <Route path="/writing" element={<Writing />} />
+        <Route path="/writing/:slug" element={<Post />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Layout>
+  );
+}
+
+function NotFound() {
+  return (
+    <div className="mx-auto max-w-[78rem] px-5 py-3xl sm:px-8">
+      <h1 className="text-4xl">Nothing here</h1>
+      <p className="mt-m max-w-[48ch] text-ink-2">
+        This page doesn&rsquo;t exist — which is at least honest.
+      </p>
+    </div>
   );
 }
 

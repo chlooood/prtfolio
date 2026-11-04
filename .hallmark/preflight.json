@@ -1,0 +1,11 @@
+{
+  "scanned": "2026-08-12",
+  "framework": "React 19 + Vite 8 (react-router 8)",
+  "fonts": ["Cormorant Garamond", "Jost"],
+  "paletteSource": "src/styles/tokens.css (@theme, OKLCH)",
+  "spacing": "named 4-pt scale via --spacing-* tokens",
+  "motion": "motion (framer-motion successor) — motion-on",
+  "styling": "Tailwind v4 (@tailwindcss/vite); Bootstrap removed",
+  "content": "MDX via @mdx-js/rollup, posts in src/content/posts/",
+  "notes": "Palette is a tuned OKLCH translation of the prior Etta's Acres cream/sage/gold hex set."
+}

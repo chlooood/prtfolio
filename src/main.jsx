@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router';
 import App from './App.jsx';
 
-// Bootstrap JS (dropdowns, offcanvas, etc.) + our SCSS entry point
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import './styles/main.scss';
+import './styles/tokens.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
 );
