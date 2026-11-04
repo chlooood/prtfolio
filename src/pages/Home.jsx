@@ -132,19 +132,17 @@ export default function Home() {
             short surfaces rather than absorbing the whole CV. */}
 
         {/* ── Off the clock ── */}
-        {HOBBIES.length > 0 && (
+        {HOBBIES.filter((h) => h.blurb).length > 0 && (
           <Rail number={next()} title="Off the clock">
             <ul className="grid gap-m sm:grid-cols-2 lg:grid-cols-3">
-              {HOBBIES.map((hobby, i) => (
+              {HOBBIES.filter((h) => h.blurb).map((hobby, i) => (
                 <li key={hobby.title}>
                   <Reveal index={i}>
-                    <div className="h-full rounded-card border border-rule-2 bg-paper-2/60 px-m py-m">
+                    <div className="group h-full rounded-card border-l-4 border-solid border-l-gold/60 bg-paper-2/80 px-m py-m shadow-[0_1px_3px_-1px_rgba(0,0,0,0.06)] transition-shadow duration-base hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)]">
                       <h3 className="text-2xl text-ink">{hobby.title}</h3>
-                      {hobby.blurb && (
-                        <p className="mt-2 text-base leading-relaxed text-ink-2">
-                          {hobby.blurb}
-                        </p>
-                      )}
+                      <p className="mt-2 text-base leading-relaxed text-ink-2">
+                        {hobby.blurb}
+                      </p>
                     </div>
                   </Reveal>
                 </li>
@@ -156,11 +154,11 @@ export default function Home() {
         {/* ── Interests ── */}
         {INTERESTS.length > 0 && (
           <Rail number={next()} title="Also interested in">
-            <ul className="flex flex-wrap gap-2">
+            <ul className="flex flex-wrap gap-2.5">
               {INTERESTS.map((interest) => (
                 <li
                   key={interest}
-                  className="rounded-full border border-rule px-3.5 py-1.5 text-sm text-ink-2"
+                  className="rounded-full border border-rule bg-paper-2/70 px-4 py-2 text-sm text-ink-2 transition-all duration-base hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-[0_3px_8px_-3px_rgba(0,0,0,0.08)]"
                 >
                   {interest}
                 </li>

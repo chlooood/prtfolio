@@ -89,8 +89,9 @@ export default function PaintedBackdrop() {
               sit, and fades the whole thing out through the middle band where
               the reading copy lives. */}
           <linearGradient id="pb-sky-fade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="white" stopOpacity="0.85" />
-            <stop offset="60%" stopColor="white" stopOpacity="0.5" />
+            <stop offset="0%" stopColor="white" stopOpacity="0.92" />
+            <stop offset="45%" stopColor="white" stopOpacity="0.6" />
+            <stop offset="75%" stopColor="white" stopOpacity="0.2" />
             <stop offset="100%" stopColor="white" stopOpacity="0" />
           </linearGradient>
           <mask id="pb-sky-mask">
@@ -101,8 +102,9 @@ export default function PaintedBackdrop() {
               below most of the reading copy, so it can afford to. */}
           <linearGradient id="pb-meadow-fade" x1="0" y1="1" x2="0" y2="0">
             <stop offset="0%" stopColor="white" stopOpacity="1" />
-            <stop offset="45%" stopColor="white" stopOpacity="0.92" />
-            <stop offset="78%" stopColor="white" stopOpacity="0.45" />
+            <stop offset="40%" stopColor="white" stopOpacity="0.95" />
+            <stop offset="65%" stopColor="white" stopOpacity="0.6" />
+            <stop offset="85%" stopColor="white" stopOpacity="0.25" />
             <stop offset="100%" stopColor="white" stopOpacity="0" />
           </linearGradient>
           <mask id="pb-meadow-mask">

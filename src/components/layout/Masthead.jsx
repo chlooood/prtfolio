@@ -26,18 +26,18 @@ export default function Masthead() {
       </a>
 
       <div className="sticky top-0 z-50 border-b border-rule-2 bg-paper/85 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-[78rem] items-center justify-between gap-6 px-5 py-4 sm:px-8">
-          <Link to="/" className="group flex min-w-0 items-center gap-2.5 no-underline sm:gap-3">
-            <DandelionMark className="text-[clamp(1.25rem,2.4vw,1.6rem)]" />
+        <div className="mx-auto flex max-w-[78rem] items-center justify-between gap-4 px-5 py-3 sm:gap-6 sm:px-8 sm:py-4">
+          <Link to="/" className="group flex min-w-0 items-center gap-2 no-underline sm:gap-3">
+            <DandelionMark className="text-[clamp(1.15rem,2.4vw,1.6rem)]" />
             <span className="flex min-w-0 flex-col sm:flex-row sm:items-baseline sm:gap-3">
-              <span className="font-display text-[clamp(1.25rem,2.4vw,1.6rem)] font-semibold tracking-wordmark text-ink transition-colors duration-fast group-hover:text-accent">
+              <span className="font-display text-[clamp(1.1rem,2.4vw,1.6rem)] font-semibold tracking-wordmark whitespace-nowrap text-ink transition-colors duration-fast group-hover:text-accent">
                 {PROFILE.name}
               </span>
-              <span className="truncate text-xs text-muted">{PROFILE.signature}</span>
+              <span className="hidden truncate text-xs text-muted sm:inline">{PROFILE.signature}</span>
             </span>
           </Link>
 
-          <nav aria-label="Primary" className="flex shrink-0 items-center gap-6 sm:gap-8">
+          <nav aria-label="Primary" className="flex shrink-0 items-center gap-4 sm:gap-8">
             {NAV_LINKS.map(({ label, href }) => (
               <NavLink
                 key={href}

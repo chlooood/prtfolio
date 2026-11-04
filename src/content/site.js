@@ -30,10 +30,11 @@ export const DANDELIONS = {
  * a legibility trade, not just taste:
  *   0      — off entirely, plain cream paper
  *   0.18   — a suggestion of weather; text unaffected
- *   0.32   — current. Clearly painted, still comfortably readable
+ *   0.32   — subtle. Clearly painted, still comfortably readable
+ *   0.48   — current. Vivid field, text still clears AA over worst-case bed
  *   0.5+   — vivid like the reference painting, but paragraph contrast starts
  *            to suffer and the editorial character gives way to illustration
  */
 export const BACKDROP = {
-  intensity: 0.32,
+  intensity: 0.48,
 };
