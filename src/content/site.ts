@@ -57,6 +57,8 @@ export type Project = {
   figure?: "odds" | "ndtm" | "runway";
   /* The italic caption under the figure. */
   caption?: string;
+  story?: { question: string; approach: string; evidence: string; takeaway: string };
+  evidenceImages?: { src: string; alt: string; caption: string }[];
   placeholder?: boolean;
 };
 
@@ -70,6 +72,13 @@ export const PROJECTS: Project[] = [
     repo: "https://github.com/chlooood/odds-engine",
     live: null,
     image: null,
+    story: {
+      question: "How do you distinguish a genuine pricing gap from simulation noise?",
+      approach: "Model synthetic odds, latency, and pricing noise in a deterministic C++ simulator, then repeat the same conditions to test whether an opportunity persists.",
+      evidence: "CI reproducibility checks across 90k+ generated records per run, as described in the project summary.",
+      takeaway: "A convincing experiment needs realistic failure modes, not just a result that looks profitable.",
+    },
+    evidenceImages: [], // TODO: add real plots, terminal output and CI evidence
     figure: "odds",
     caption:
       "The premise, small enough to play with. Turn up the latency and watch the market start contradicting itself.",
@@ -83,6 +92,13 @@ export const PROJECTS: Project[] = [
     repo: "https://github.com/chlooood/ndtm-app",
     live: "https://chlooood.github.io/ndtm-app/",
     image: null,
+    story: {
+      question: "How can inspiration from a screenshot become a trip you can actually plan?",
+      approach: "Use image understanding to locate inspiration, but generate routes, booking links, and packing suggestions through constrained device-side rules.",
+      evidence: "Interactive planning-rule demonstration below; add genuine application screenshots to show the full user experience.",
+      takeaway: "The vision model should recognize what is visible, not invent travel logistics.",
+    },
+    evidenceImages: [], // TODO: add authentic app screenshots
     figure: "ndtm",
     caption:
       "The tailoring rules on their own. Change the trip and the plan rewrites itself; tick what you own and it comes off the list.",
@@ -96,6 +112,13 @@ export const PROJECTS: Project[] = [
     repo: "https://github.com/chlooood/runway-app",
     live: null,
     image: null,
+    story: {
+      question: "Will my exchange savings stretch far enough?",
+      approach: "Use a transparent rules-based forecasting model with adjustable city and spending assumptions.",
+      evidence: "Interactive illustrative forecast below; add genuine UI screenshots and validated outcome examples when ready.",
+      takeaway: "A forecast becomes more useful when you can change the assumptions yourself.",
+    },
+    evidenceImages: [], // TODO: add authentic charts and app screenshots
     figure: "runway",
     caption:
       "The forecast rule on made-up numbers. Push the budget away up until the line goes red, then trim until it doesn’t.",
@@ -148,7 +171,7 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
     x: "24%",
     y: "52%",
     description: "The starting point. A shelf for dispatches from home, before the next departure.",
-    accent: "#1c4e8a",
+    accent: "#628eac",
     motif: "01 / Coastlines",
     posts: [],
   },
@@ -158,7 +181,7 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
     x: "73%",
     y: "40%",
     description: "A place-marker ready for stories, photographs, and the little details that make a city memorable.",
-    accent: "#c7401f",
+    accent: "#c9828e",
     motif: "02 / City notes",
     posts: [],
   },
@@ -168,7 +191,7 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
     x: "65%",
     y: "78%",
     description: "An empty page for wherever the road leads next. Update the place name when the journey begins.",
-    accent: "#2f6b4f",
+    accent: "#8c6fa8",
     motif: "03 / To be continued",
     posts: [],
   },
