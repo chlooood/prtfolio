@@ -10,10 +10,10 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 /* Disc colour and ring colour, per pursuit. */
 const DISCS = [
-  { fill: "#2f6b4f", line: "#f1e3b5" },
-  { fill: "#f4ecdb", line: "#8a2331" },
-  { fill: "#e57f32", line: "#221a17" },
-  { fill: "#e2b043", line: "#5a2f1a" },
+  { fill: "#728e83", line: "#f6efe7" },
+  { fill: "#aa8bb6", line: "#f6efe7" },
+  { fill: "#e39a68", line: "#2a1f27" },
+  { fill: "#6d91b9", line: "#f6efe7" },
 ];
 
 /** One irregular closed ring: a circle that never quite is. */
