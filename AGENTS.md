@@ -11,7 +11,7 @@ Downstream is a single-page interactive portfolio built with Next.js App Router,
 - `MotionRoot.tsx` owns shared GSAP scroll entrances and draggable scraps; project figures own their interactions.
 
 ## Design constraints
-Preserve the Downstream concept: a continuous gouache river, bare paper reading zones, cut-paper surfaces, Fraunces and DM Mono, tactile and sometimes unconventional interactions. Do not redesign into generic cards, glass UI, gradients or a template. Add new content as intentional destinations along the river. Prioritize legibility and delight equally.
+Preserve the Downstream concept: a continuous gouache river, bare paper reading zones, cut-paper surfaces, Bricolage display type, Fraunces reading type and DM Mono captions, tactile and sometimes unconventional interactions. Do not redesign into generic cards, glass UI, gradients or a template. This experimental branch emphasizes soft rose/mauve/apricot/blue washes, restrained text navigation, and case-study evidence without invented claims. Add new content as intentional destinations along the river. Prioritize legibility and delight equally.
 
 ## Commands
 - `npm install`
