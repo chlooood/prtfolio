@@ -27,9 +27,8 @@ export const NOW = {
   basedIn: "Vancouver, BC",
   /* IANA zone for the live clock in the nav. */
   timeZone: "America/Vancouver",
-  /* TODO: carried over from the summer. Set to null when you're home and the
-     line disappears. */
-  currentlyIn: "Toronto, ON" as string | null,
+  /* No unverified live-location claim; set to a city when you want it shown. */
+  currentlyIn: null as string | null,
 };
 
 export const CONTACT = {
@@ -179,12 +178,13 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
  *  OFF THE CLOCK
  *  Each pursuit is a title on a tree-ring disc. Two optional extras, both
  *  hidden until you fill them in:
- *    photos — paths under /public, e.g. ["/hiking/01.jpg", "/hiking/02.jpg"].
- *             Up to three show as small prints under the title.
+ *    photos — objects: { src: "/hiking/01.jpg", alt: "Alpine trail", caption: "..." }.
+ *             Add as many as you like; each item becomes one carousel slide.
  *    strava — the `src` URL from a Strava embed (Profile → Share → Embed),
  *             e.g. "https://www.strava.com/athletes/<id>/latest-rides/<hash>".
  * ─────────────────────────────────────────────────────────────────────────── */
-export type Pursuit = { title: string; photos?: string[]; strava?: string | null };
+export type PursuitPhoto = { src: string; alt: string; caption?: string };
+export type Pursuit = { title: string; photos?: PursuitPhoto[]; strava?: string | null };
 
 export const PURSUITS: Pursuit[] = [
   { title: "Soccer", photos: [] }, // TODO: soccer photos → /public/soccer/
