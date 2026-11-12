@@ -54,9 +54,7 @@ export function Read() {
 
         {FINISHED.length > 0 && (
           <div className="md:col-span-9">
-            <Paper as="p" flat tilt={1.5} className="label mb-5 inline-block px-3 py-1.5 text-ink-2">
-              Finished, {FINISHED_YEAR}
-            </Paper>
+            <p className="mb-5 font-mono text-xs tracking-[.04em] text-ink-2">Finished, {FINISHED_YEAR}</p>
             <ul
               data-reveal
               className="shelf flex h-[clamp(24rem,42vw,36rem)] items-end gap-[clamp(0.25rem,0.9vw,0.875rem)] px-[2%]"
