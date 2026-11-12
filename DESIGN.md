@@ -88,7 +88,7 @@ placeholders.
 
 | Role | Face | Settings |
 | --- | --- | --- |
-| Display (`.display`) | **Fraunces** 900 | `SOFT 100`, `WONK 1`, `opsz 144`, −0.035em, leading 0.88 |
+| Display (`.display`) | **Bricolage Grotesque** 800 | `opsz 96`, `wdth 100`, −0.065em, leading 0.97 |
 | Statement (`.statement`) | Fraunces 400 | `SOFT 100`, `opsz 96`, −0.022em |
 | Text and annotations | Fraunces 400, roman and italic | Italic is the caption/aside voice |
 | Labels and figures (`.label`, `.figure`) | **DM Mono** | 11px, uppercase, +0.13em; tabular numerals |
@@ -103,7 +103,7 @@ Display type appears three ways:
   keeps it legible.
 - **Plain ink** on a sheet.
 
-The hero name is fitted to the measure in JS. Section titles (`CutTitle`)
+The display headings use bold Bricolage Grotesque as a more graphic, contemporary contrast to the hand-painted map. Body copy and statements keep Fraunces to retain the editorial warmth. The hero name is fitted to the measure in JS. Section titles (`CutTitle`)
 tumble into place letter by letter when they arrive.
 
 ## Cut paper
