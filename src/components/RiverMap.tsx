@@ -69,36 +69,37 @@ const FRAG = /* glsl */ `
 
   vec3 hex(float r, float g, float b) { return vec3(r, g, b) / 255.0; }
 
-  // Three eight-colour sets: highland, mid-course, coast.
+  // Atmospheric watercolor palette: dusk highlands, rose & apricot valley, blue coast.
+  // Keep the opening dark enough for cream masthead lettering to remain legible.
   vec3 palA(int i) {
-    if (i == 0) return hex(46.0, 94.0, 70.0);    // forest
-    if (i == 1) return hex(31.0, 90.0, 98.0);    // deep teal
-    if (i == 2) return hex(122.0, 34.0, 48.0);   // maroon
-    if (i == 3) return hex(201.0, 67.0, 42.0);   // vermilion
-    if (i == 4) return hex(95.0, 127.0, 63.0);   // moss
-    if (i == 5) return hex(190.0, 136.0, 44.0);  // ochre
-    if (i == 6) return hex(36.0, 70.0, 79.0);    // slate green
-    return hex(168.0, 80.0, 31.0);               // rust
+    if (i == 0) return hex(64.0, 88.0, 109.0);     // slate blue
+    if (i == 1) return hex(85.0, 87.0, 126.0);     // dusty violet
+    if (i == 2) return hex(115.0, 73.0, 99.0);     // deep rose
+    if (i == 3) return hex(159.0, 91.0, 106.0);    // faded berry
+    if (i == 4) return hex(80.0, 107.0, 99.0);     // moss
+    if (i == 5) return hex(176.0, 126.0, 107.0);   // clay apricot
+    if (i == 6) return hex(55.0, 88.0, 113.0);     // indigo lake
+    return hex(140.0, 86.0, 109.0);                // warm mauve
   }
   vec3 palB(int i) {
-    if (i == 0) return hex(212.0, 69.0, 42.0);   // vermilion
-    if (i == 1) return hex(229.0, 127.0, 50.0);  // orange
-    if (i == 2) return hex(230.0, 181.0, 69.0);  // mustard
-    if (i == 3) return hex(138.0, 35.0, 49.0);   // maroon
-    if (i == 4) return hex(233.0, 165.0, 147.0); // pink
-    if (i == 5) return hex(47.0, 107.0, 79.0);   // forest
-    if (i == 6) return hex(46.0, 127.0, 134.0);  // teal
-    return hex(240.0, 226.0, 196.0);             // cream
+    if (i == 0) return hex(195.0, 127.0, 146.0);   // dusty rose
+    if (i == 1) return hex(224.0, 155.0, 112.0);   // apricot
+    if (i == 2) return hex(214.0, 175.0, 144.0);   // pale ochre
+    if (i == 3) return hex(143.0, 111.0, 166.0);   // lilac
+    if (i == 4) return hex(227.0, 177.0, 178.0);   // blossom
+    if (i == 5) return hex(117.0, 150.0, 142.0);   // sage
+    if (i == 6) return hex(110.0, 151.0, 182.0);   // blue wash
+    return hex(244.0, 223.0, 205.0);               // rose cream
   }
   vec3 palC(int i) {
-    if (i == 0) return hex(43.0, 127.0, 134.0);  // teal
-    if (i == 1) return hex(158.0, 198.0, 211.0); // sky
-    if (i == 2) return hex(188.0, 216.0, 195.0); // mint
-    if (i == 3) return hex(235.0, 217.0, 176.0); // sand
-    if (i == 4) return hex(30.0, 79.0, 134.0);   // deep blue
-    if (i == 5) return hex(134.0, 176.0, 149.0); // sage
-    if (i == 6) return hex(235.0, 177.0, 166.0); // pink
-    return hex(226.0, 181.0, 81.0);              // mustard
+    if (i == 0) return hex(89.0, 137.0, 178.0);    // lake
+    if (i == 1) return hex(169.0, 194.0, 216.0);  // mist blue
+    if (i == 2) return hex(196.0, 206.0, 188.0);  // sage
+    if (i == 3) return hex(239.0, 219.0, 197.0);  // blush sand
+    if (i == 4) return hex(72.0, 105.0, 150.0);   // deep blue
+    if (i == 5) return hex(166.0, 172.0, 183.0);  // lavender grey
+    if (i == 6) return hex(223.0, 171.0, 186.0);  // dusty rose
+    return hex(222.0, 190.0, 162.0);               // apricot sand
   }
 
   // The main channel's centre line. Mirrors riverX() in lib/river.ts.
@@ -190,7 +191,7 @@ const FRAG = /* glsl */ `
     // Dry-brush edges: where strokes meet, paper shows through in places.
     float edge = thin > 0.5 ? min(fr - 0.74, 1.0 - fr) : min(fr, (hash1(idx * 5.3) > 0.62 ? 0.74 : 1.0) - fr);
     float gap = smoothstep(0.03, 0.0, edge) * smoothstep(0.42, 0.62, noise(vec2(idx * 3.7, along * 7.0)));
-    vec3 paper = hex(244.0, 236.0, 219.0);
+    vec3 paper = hex(246.0, 239.0, 231.0);
     land = mix(land, paper, gap * 0.85);
     land *= 1.0 - smoothstep(0.07, 0.0, edge) * 0.07;
 
@@ -211,29 +212,29 @@ const FRAG = /* glsl */ `
     // paper through the middle, gold and then rose toward the coast.
     // The day ends where the coast's full colour takes over again.
     float day = clamp((ypx - uConf) / max(uSea - 0.9 * uRes.y - uConf, 1.0), 0.0, 1.0);
-    vec3 sky = mix(hex(250.0, 211.0, 188.0), hex(246.0, 226.0, 196.0), smoothstep(0.0, 0.16, day));
-    sky = mix(sky, hex(244.0, 238.0, 224.0), smoothstep(0.12, 0.36, day));
-    sky = mix(sky, hex(247.0, 214.0, 158.0), smoothstep(0.52, 0.74, day));
-    sky = mix(sky, hex(236.0, 152.0, 118.0), smoothstep(0.72, 0.9, day));
-    sky = mix(sky, hex(196.0, 122.0, 132.0), smoothstep(0.88, 1.0, day));
+    vec3 sky = mix(hex(242.0, 213.0, 207.0), hex(245.0, 229.0, 213.0), smoothstep(0.0, 0.16, day));
+    sky = mix(sky, hex(246.0, 239.0, 231.0), smoothstep(0.12, 0.36, day));
+    sky = mix(sky, hex(237.0, 207.0, 186.0), smoothstep(0.52, 0.74, day));
+    sky = mix(sky, hex(215.0, 164.0, 168.0), smoothstep(0.72, 0.9, day));
+    sky = mix(sky, hex(176.0, 143.0, 179.0), smoothstep(0.88, 1.0, day));
     // Laid on unevenly, like a wash: a little pooling, a little bloom.
     sky *= 0.965 + 0.07 * fbm(p * 1.6 + 31.0);
     sky = mix(sky, sky * vec3(1.03, 0.99, 0.95), smoothstep(0.45, 0.75, fbm(p * 0.7 + 5.0)));
     land = mix(land, sky, bare);
 
     // ── Water colour: deep blue, lighter threads drifting downstream ─────
-    vec3 water = mix(hex(28.0, 78.0, 138.0), hex(22.0, 60.0, 112.0), seaT);
+    vec3 water = mix(hex(57.0, 102.0, 150.0), hex(44.0, 77.0, 127.0), seaT);
     float across = (r.x - c) / max(wMain, 0.001);
     float thread = noise(vec2(across * 2.2 + r.x * 30.0 * seaT, r.y * 9.0 - uTime * 0.22));
     // Out at sea the threads calm down so type can sit on the water.
     float calm = 1.0 - 0.55 * seaT;
-    water = mix(water, hex(108.0, 164.0, 214.0), smoothstep(0.56, 0.7, thread) * 0.75 * calm);
-    water = mix(water, hex(16.0, 44.0, 86.0), smoothstep(0.3, 0.12, thread) * 0.5 * calm);
+    water = mix(water, hex(151.0, 183.0, 213.0), smoothstep(0.56, 0.7, thread) * 0.75 * calm);
+    water = mix(water, hex(39.0, 65.0, 109.0), smoothstep(0.3, 0.12, thread) * 0.5 * calm);
     water *= 0.96 + 0.08 * noise(p * 60.0);
 
     vec3 col = land;
     // A line of sand where land meets water.
-    col = mix(col, hex(238.0, 222.0, 184.0), smoothstep(0.007, 0.002, dRiver) * (1.0 - zoneC * 0.3));
+    col = mix(col, hex(239.0, 221.0, 205.0), smoothstep(0.007, 0.002, dRiver) * (1.0 - zoneC * 0.3));
     col = mix(col, water, smoothstep(0.0015, -0.0015, dRiver + (noise(p * 40.0) - 0.5) * 0.003));
 
     // Paint spreads outward from the water on load.
