@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger, MOTION_OK } from "@/lib/gsap";
 import { INTERESTS, PURSUITS } from "@/content/site";
 import { PlaceholderTag } from "./Cite";
+import { CutTitle } from "./CutTitle";
 import { Paper } from "./Paper";
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -93,7 +94,7 @@ function Ribbon() {
           >
             {t}
           </span>
-          <span aria-hidden="true" className="h-[0.6em] w-[0.6em] rounded-full bg-vermilion text-[clamp(2rem,5vw,4.5rem)]" />
+          <span aria-hidden="true" className="h-[0.6em] w-[0.6em] rounded-full bg-mustard text-[clamp(2rem,5vw,4.5rem)]" />
         </li>
       ))}
     </ul>
@@ -101,8 +102,8 @@ function Ribbon() {
 
   return (
     <div ref={root} className="-mx-[4vw] mt-[clamp(4rem,10vw,9rem)]">
-      <Paper tilt={-1.6} className="py-[clamp(1rem,2vw,1.75rem)]">
-        <p className="label mb-2 px-[calc(4vw+var(--pad))] text-muted">Also interested in</p>
+      <Paper tilt={-1.6} sheet="var(--color-forest)" className="py-[clamp(1rem,2vw,1.75rem)] text-cream">
+        <p className="label mb-2 px-[calc(4vw+var(--pad))] opacity-80">Also interested in</p>
         <div className="overflow-hidden motion-reduce:overflow-x-auto">
           <div data-track className="flex w-max">
             <Row />
@@ -121,20 +122,18 @@ function Ribbon() {
 export function OffClock() {
   return (
     <section id="off-the-clock" className="pt-[clamp(10rem,42vh,26rem)]">
-      <header className="px-[var(--pad)]">
-        <p className="cutout label">Mile 03 · {pad(PURSUITS.length)} pursuits</p>
-        <h2 className="display cutout mt-3 text-[clamp(3.75rem,14vw,13rem)]">
-          Off the
-          <br />
-          clock
-        </h2>
-      </header>
+      <CutTitle
+        lines={["Off the", "clock"]}
+        label={`Mile 03 · ${pad(PURSUITS.length)} pursuits`}
+        className="px-[var(--pad)]"
+      />
 
       <ul className="mt-[clamp(2rem,6vw,5rem)] grid grid-cols-2 gap-x-[4vw] gap-y-16 px-[var(--pad)] lg:grid-cols-4 lg:gap-x-0">
         {PURSUITS.map((p, i) => (
           <li
             key={p.title}
             data-reveal
+            data-drag
             className={`disc relative ${i % 2 ? "lg:mt-[7vw]" : ""} ${i > 0 ? "lg:-ml-[2.5vw]" : ""}`}
             style={{ zIndex: PURSUITS.length - i }}
           >

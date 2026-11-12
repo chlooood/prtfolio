@@ -111,6 +111,7 @@ export function Hero() {
         <Paper
           tilt={-1.2}
           data-hero-in
+          data-drag
           className="max-w-[36rem] px-[clamp(1.25rem,2.4vw,2.25rem)] py-[clamp(1.25rem,2.2vw,2rem)] md:w-[44%]"
         >
           <p className="statement text-[clamp(1.625rem,2.9vw,2.875rem)] text-balance">
@@ -134,6 +135,7 @@ export function Hero() {
           flat
           sheet="var(--color-mustard)"
           data-hero-in
+          data-drag
           className="label grid max-w-[22rem] grid-cols-[auto_1fr] gap-x-4 gap-y-2 self-end px-5 py-4 md:w-[26%]"
         >
           <dt className="text-ink/70">Based</dt>

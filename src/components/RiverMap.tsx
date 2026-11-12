@@ -13,6 +13,10 @@ import { useEffect, useRef } from "react";
  * greens and reds at the source, hot oranges mid-course, cool teals and sand
  * at the coast.
  *
+ * The map is painted edge to edge at the source and at the sea. Through the
+ * middle of the page it thins to a ribbon of colour along the river on clean
+ * paper, so the content has room and quiet.
+ *
  * Everything is computed per pixel; there is no image. The pointer presses a
  * soft dent into the bands, and on load the paint spreads outward from the
  * water. With reduced motion it renders still frames on scroll only.
@@ -185,6 +189,20 @@ const FRAG = /* glsl */ `
     vec3 paper = hex(244.0, 236.0, 219.0);
     land = mix(land, paper, gap * 0.85);
     land *= 1.0 - smoothstep(0.07, 0.0, edge) * 0.07;
+
+    // Clean paper. The opening and the coast are painted edge to edge; in
+    // between, the colour keeps to a few bands either side of the river (and
+    // to rings around the hills) and the rest of the sheet is left bare. The
+    // reach wanders, and the last band is dry-brushed out.
+    float ypx = p.y * S;
+    float corridor = smoothstep(uConf + 0.05 * uRes.y, uConf + 0.95 * uRes.y, ypx)
+                   * (1.0 - smoothstep(uSea - 1.15 * uRes.y, uSea - 0.3 * uRes.y, ypx));
+    float reach = 4.6 + 2.6 * noise(vec2(p.y * 1.3, 3.0)) + 1.4 * noise(vec2(p.y * 4.1, 9.0));
+    float tv = t - uTime * 0.012;
+    // Widening is done by reach, stripe by stripe — never by fading.
+    reach += (1.0 - corridor) * 70.0;
+    float bare = smoothstep(reach - 0.3, reach, tv + (noise(vec2(along * 9.0, idx)) - 0.5) * 0.55);
+    land = mix(land, paper, bare);
 
     // ── Water colour: deep blue, lighter threads drifting downstream ─────
     vec3 water = mix(hex(28.0, 78.0, 138.0), hex(22.0, 60.0, 112.0), seaT);

@@ -143,6 +143,15 @@ button.tag:active {
   transform: translateY(0) scale(0.97);
 }
 
+/* Ink type with a cream margin, like letters cut out with scissors. On bare
+   paper the margin disappears; over paint it keeps the word legible. */
+.sticker {
+  color: var(--color-ink);
+  -webkit-text-stroke: 0.11em var(--color-paper);
+  paint-order: stroke fill;
+  filter: drop-shadow(0 0.03em 0.05em rgb(34 20 12 / 0.28));
+}
+
 /* Type cut from paper and laid on the map. */
 .cutout {
   color: var(--color-cream);

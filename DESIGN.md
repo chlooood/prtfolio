@@ -3,7 +3,7 @@
 ## Concept — *Downstream*
 
 The whole site is one aerial map, painted in bands of gouache, with the
-content laid on top as cut paper.
+content laid on top as cut paper — and a lot of clean paper left bare.
 
 Two streams rise at the top corners of the page — **Business** and **Computer
 Science** — and meet at a confluence at the foot of the hero. From there one
@@ -16,6 +16,18 @@ cover (a city seen from above in vermilion and green, birds crossing it),
 cut-paper collage, tree-ring prints, banded gouache, an embroidered river.
 What they share is what this site is built from: **the view from above, flat
 saturated colour in bands, and things cut out and laid down by hand.**
+
+### Loud at the ends, quiet in the middle
+
+The map is painted edge to edge only twice: at the source (the hero, which
+works as a poster) and at the sea (the footer). Through the middle of the
+page the colour keeps to a ribbon a few bands wide along the river, plus
+rings around the odd hill, and the rest of the sheet is bare paper. That is
+where the content lives, so reading happens on a calm, clean ground with the
+river always somewhere in view. The ribbon widens and narrows stripe by
+stripe; nothing ever fades.
+
+This is the cleanness of the earlier watercolour version, kept on purpose.
 
 ### What it replaced, and why
 
@@ -73,9 +85,18 @@ placeholders.
 | Text and annotations | Fraunces 400, roman and italic | Italic is the caption/aside voice |
 | Labels and figures (`.label`, `.figure`) | **DM Mono** | 11px, uppercase, +0.13em; tabular numerals |
 
-Display type appears two ways: in ink on a sheet, or **cut out** (`.cutout`) —
-cream with a hard shadow, laid straight on the map like a masthead. The hero
-name is fitted to the measure in JS.
+Display type appears three ways:
+
+- **Cut out** (`.cutout`) — cream with a hard shadow, laid on fully painted
+  map. The hero name and the links on the sea.
+- **Sticker** (`.sticker`) — ink with a cream margin, like letters cut out
+  with scissors. Section titles. On bare paper the margin disappears and the
+  title reads as plain ink; where the river wanders underneath, the margin
+  keeps it legible.
+- **Plain ink** on a sheet.
+
+The hero name is fitted to the measure in JS. Section titles (`CutTitle`)
+tumble into place letter by letter when they arrive.
 
 ## Cut paper
 
@@ -85,7 +106,9 @@ adds paper grain and a soft shadow, and takes a `tilt` in degrees — nothing in
 a collage sits square. Variants are only colour (`sheet`) and height off the
 table (`flat`).
 
-- **Sheets** carry sections (Premise, Built, Read, Citations).
+- **Sheets** carry reading matter. Sections are several overlapping scraps
+  rather than one page: Built is a write-up, a working figure and an index;
+  Read is a note of what's open beside a shelf standing on the page.
 - **Tags** carry nav, stack items, links. They lift and twist on hover.
 - **Spines** are the reading list: bands of colour, like the land outside.
 - **Ring discs** are the pursuits: tree rounds cut from paper, one irregular
@@ -114,7 +137,9 @@ Everything is computed per pixel in `RiverMap`; there is no image file.
 2. **Scrolling is travel.** The map moves 1:1 with the page; the birds hold a
    V a third of the way down the screen and bank with the channel.
 3. **Everything can be touched.** The pointer presses a soft dent into the
-   bands. Birds scatter from it and drift back. Tags lift, spines rise and
+   bands. Birds scatter from it and drift back. Loose scraps — the hero
+   notes, the open-books note, the ring discs — can be picked up with a mouse
+   and left wherever you drop them. Tags lift, spines rise and
    their neighbours step back, ring discs turn, a paper plate trails the
    cursor over the project index and swings with its direction.
 4. **Paper is put down, not faded in.** Sheets slide up and settle from a
