@@ -29,7 +29,7 @@
 }
 
 :root {
-  --pad: clamp(1rem, 3.4vw, 3.25rem);
+  --pad: clamp(1.25rem, 4.4vw, 5rem);
   --nav-h: 4rem;
   color-scheme: light;
 }
@@ -51,8 +51,8 @@ body {
   color: var(--color-ink);
   font-family: var(--font-serif);
   font-size: 1.0625rem;
-  line-height: 1.5;
-  font-variation-settings: "SOFT" 50, "WONK" 0;
+  line-height: 1.58;
+  font-variation-settings: "SOFT" 16, "WONK" 0;
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -75,26 +75,26 @@ body {
 /* Display: Fraunces at its heaviest, softest and most eccentric. */
 .display {
   font-family: var(--font-display);
-  font-weight: 900;
-  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  font-weight: 780;
+  font-variation-settings: "SOFT" 20, "WONK" 0, "opsz" 120;
   letter-spacing: -0.035em;
-  line-height: 0.88;
+  line-height: 0.96;
 }
 
 /* Statement: large reading text, light and optical. */
 .statement {
   font-family: var(--font-display);
   font-weight: 400;
-  font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 96;
-  letter-spacing: -0.022em;
-  line-height: 1.06;
+  font-variation-settings: "SOFT" 15, "WONK" 0, "opsz" 72;
+  letter-spacing: -0.015em;
+  line-height: 1.13;
 }
 
 .label {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
-  line-height: 1.4;
-  letter-spacing: 0.13em;
+  line-height: 1.5;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   font-variation-settings: normal;
 }
