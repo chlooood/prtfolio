@@ -29,7 +29,7 @@ export function CutTitle({
     mm.add(MOTION_OK, () => {
       gsap.from("[data-l]", {
         yPercent: 125,
-        rotation: () => gsap.utils.random(-18, 18),
+        rotation: () => gsap.utils.random(-9, 9),
         duration: 1.1,
         ease: "back.out(1.6)",
         stagger: 0.045,
@@ -51,7 +51,7 @@ export function CutTitle({
         ))}
       <h2
         aria-label={lines.join(" ")}
-        className={`display mt-3 text-[clamp(4rem,15vw,14rem)] ${cut ? "cutout" : "sticker"}`}
+        className={`display mt-3 text-[clamp(3.65rem,11.5vw,10.5rem)] ${cut ? "cutout" : "sticker"}`}
       >
         {lines.map((line) => (
           <span key={line} aria-hidden="true" className="-mb-[0.14em] block overflow-hidden pb-[0.26em] pt-[0.06em]">
