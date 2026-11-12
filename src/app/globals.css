@@ -20,7 +20,7 @@
   --color-pink: #e9a593;
   --color-cream: #f7eed8;
 
-  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-display: var(--font-bricolage), "Arial Rounded MT Bold", Arial, sans-serif;
   --font-serif: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --font-mono: var(--font-dm-mono), ui-monospace, "SFMono-Regular", monospace;
 
@@ -72,13 +72,14 @@ body {
 @layer components {
 /* ── Type roles ──────────────────────────────────────────────────────────── */
 
-/* Display: Fraunces at its heaviest, softest and most eccentric. */
+/* Display: bold Bricolage for the hand-made poster energy, with generous paper around it. */
 .display {
   font-family: var(--font-display);
-  font-weight: 900;
-  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
-  letter-spacing: -0.035em;
-  line-height: 0.96;
+  font-weight: 800;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 96, "wdth" 100;
+  letter-spacing: -0.065em;
+  line-height: 0.97;
 }
 
 /* Statement: large reading text, light and optical. */
