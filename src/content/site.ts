@@ -162,6 +162,8 @@ export type ExchangePlace = {
   accent: string;
   motif: string;
   posts: { title: string; href: string }[];
+  photos?: { src: string; alt: string; caption?: string }[];
+  notes?: { heading: string; body: string }[];
 };
 
 export const EXCHANGE_PLACES: ExchangePlace[] = [
@@ -174,6 +176,8 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
     accent: "#628eac",
     motif: "01 / Coastlines",
     posts: [],
+    photos: [], // TODO: real destination photos
+    notes: [], // TODO: real short dispatches
   },
   {
     id: "toronto",
@@ -184,6 +188,8 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
     accent: "#c9828e",
     motif: "02 / City notes",
     posts: [],
+    photos: [], // TODO: real destination photos
+    notes: [], // TODO: real short dispatches
   },
   {
     id: "elsewhere",
@@ -194,6 +200,8 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
     accent: "#8c6fa8",
     motif: "03 / To be continued",
     posts: [],
+    photos: [], // TODO: real destination photos
+    notes: [], // TODO: real short dispatches
   },
 ];
 
