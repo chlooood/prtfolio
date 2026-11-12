@@ -115,13 +115,13 @@ export function Nav() {
       <div
         id="menu"
         hidden={!open}
-        className="fixed inset-0 z-[45] flex flex-col justify-between bg-forest px-[var(--pad)] pb-8 pt-[calc(var(--nav-h)+2rem)] text-cream md:hidden"
+        className="fixed inset-0 z-[45] flex flex-col justify-between overflow-y-auto bg-forest px-[var(--pad)] pb-8 pt-[calc(var(--nav-h)+2rem)] text-cream md:hidden"
       >
         <ul>
           {LINKS.map((l, i) => (
             <li key={l.href} className="border-b border-cream/25">
-              <a href={l.href} onClick={() => setOpen(false)} className="flex items-baseline justify-between py-4">
-                <span className="display text-[13vw]">{l.label}</span>
+              <a href={l.href} onClick={() => setOpen(false)} className="flex items-baseline justify-between py-3 sm:py-4">
+                <span className="display text-[clamp(2.7rem,11vw,6rem)]">{l.label}</span>
                 <span className="label opacity-70">0{i + 1}</span>
               </a>
             </li>
