@@ -122,7 +122,7 @@ export function Built() {
         label={`Mile 01 · ${pad(PROJECTS.filter((p) => !p.placeholder).length)} on the water`}
       />
 
-      <div className="mt-[clamp(1.5rem,4vw,3.5rem)] space-y-[clamp(6rem,22vh,14rem)]">
+      <div className="mt-[clamp(1.5rem,4vw,3.5rem)] space-y-[clamp(7rem,25vh,17rem)]">
         {features.map((p, i) => (
           <Feature key={p.name} project={p} n={i + 1} />
         ))}
