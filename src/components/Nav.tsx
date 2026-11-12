@@ -7,6 +7,7 @@ import { Paper } from "./Paper";
 const LINKS = [
   { href: "#built", label: "Built", sheet: "var(--color-pink)" },
   { href: "#read", label: "Read", sheet: "var(--color-mustard)" },
+  { href: "#exchange", label: "Exchange", sheet: "var(--color-orange)" },
   { href: "#off-the-clock", label: "Off the clock", sheet: "var(--color-paper)" },
   { href: "#contact", label: "Find me", sheet: "var(--color-paper)" },
 ];
@@ -76,7 +77,7 @@ export function Nav() {
           </Paper>
 
           <ul className="hidden items-center gap-2 md:flex">
-            {LINKS.slice(0, 3).map((l, i) => (
+            {LINKS.slice(0, 4).map((l, i) => (
               <li key={l.href}>
                 <Paper as="a" flat tilt={i % 2 ? -1.5 : 1.5} sheet={l.sheet} href={l.href} className="tag pointer-events-auto">
                   {l.label}
