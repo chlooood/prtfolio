@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Mono, Fraunces } from "next/font/google";
+import { Bricolage_Grotesque, DM_Mono, Fraunces } from "next/font/google";
 import { PROFILE } from "@/content/site";
 import "./globals.css";
 
@@ -8,6 +8,12 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
   axes: ["SOFT", "WONK", "opsz"],
   variable: "--font-fraunces",
+  display: "swap",
+});
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-bricolage",
   display: "swap",
 });
 
@@ -36,7 +42,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${dmMono.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${bricolage.variable} ${dmMono.variable}`}>
       <body>
         {/* The torn-edge filter every paper scrap shares. */}
         <svg aria-hidden="true" width="0" height="0" className="absolute">
