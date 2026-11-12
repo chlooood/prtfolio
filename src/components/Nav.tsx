@@ -69,7 +69,7 @@ export function Nav() {
       >
         <nav
           aria-label="Primary"
-          className="label flex h-[var(--nav-h)] items-center justify-between gap-3 px-[var(--pad)]"
+          className="flex h-[var(--nav-h)] items-center justify-between gap-3 px-[var(--pad)]"
         >
           <a href="#top" className="pointer-events-auto font-display text-[1.2rem] font-extrabold tracking-[-.055em] text-ink no-underline md:text-[1.35rem]">
             {PROFILE.firstName} {PROFILE.lastName}
