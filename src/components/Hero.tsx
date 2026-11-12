@@ -29,7 +29,7 @@ export function Hero() {
       const em = oneLine
         ? widths.reduce((a, b) => a + b, 0) + WORD_GAP_EM * (widths.length - 1)
         : Math.max(...widths);
-      if (em > 0) h1.style.fontSize = `${(h1.clientWidth / em) * 0.985}px`;
+      if (em > 0) h1.style.fontSize = `${(h1.clientWidth / em) * 0.89}px`;
     };
     fit();
     document.fonts?.ready.then(fit);
@@ -93,7 +93,7 @@ export function Hero() {
         ))}
       </h1>
 
-      <div className="mt-auto flex flex-col gap-5 pb-[clamp(1.25rem,3vw,2.5rem)] pt-[38vh] md:flex-row md:items-end md:justify-between md:pt-10">
+      <div className="mt-auto flex flex-col gap-5 pb-[clamp(1.25rem,3vw,2.5rem)] pt-[30vh] md:flex-row md:items-end md:justify-between md:pt-10">
         <Paper
           tilt={-1.2}
           data-hero-in
