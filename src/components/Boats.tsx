@@ -9,10 +9,10 @@ import { channelX } from "@/lib/river";
  * outside their silhouettes: they should read as playful paper boats, not mixers.
  */
 const BOATS: { at: number; side: -1 | 1; hull: string; sail: string; drift: number }[] = [
-  { at: 0.20, side: -1, hull: "#c7401f", sail: "#f7eed8", drift: -0.34 },
-  { at: 0.36, side: 1, hull: "#e2b043", sail: "#fff8df", drift: 0.31 },
-  { at: 0.54, side: -1, hull: "#2f6b4f", sail: "#dce9cc", drift: -0.12 },
-  { at: 0.72, side: 1, hull: "#1f6b73", sail: "#e9c6a5", drift: 0.15 },
+  { at: 0.20, side: -1, hull: "#c9828e", sail: "#fff2e8", drift: -0.34 },
+  { at: 0.36, side: 1, hull: "#e4a576", sail: "#fff8df", drift: 0.31 },
+  { at: 0.54, side: -1, hull: "#8c6fa8", sail: "#dce9cc", drift: -0.12 },
+  { at: 0.72, side: 1, hull: "#5f88b5", sail: "#e9c6a5", drift: 0.15 },
 ];
 
 const smooth = (a: number, b: number, value: number) => {
@@ -125,7 +125,7 @@ export function Boats() {
               <path d="M11 6L7 2M21 6L25 2" strokeWidth="1.1" />
             </g>
             <path d="M16 3C22 7 26 19 24 30C23 37 19 42 16 44C13 42 9 37 8 30C6 19 10 7 16 3Z" fill="#092c25" opacity=".2" transform="translate(2 2)" />
-            <path d="M16 2C23 7 26 18 24 30C23 37 19 42 16 44C13 42 9 37 8 30C6 18 9 7 16 2Z" fill={boat.hull} stroke="#221a17" strokeWidth=".8" />
+            <path d="M16 2C23 7 26 18 24 30C23 37 19 42 16 44C13 42 9 37 8 30C6 18 9 7 16 2Z" fill={boat.hull} stroke="#2a1f27" strokeWidth=".8" />
             <path d="M16 7C20 13 22 26 19 37Q16 41 13 37C10 26 12 13 16 7Z" fill="#f4ecdb" opacity=".6" />
             {/* A single rounded sail silhouette inside the hull. */}
             <path d="M16 9Q8 18 11 33L16 35Z" fill={boat.sail} stroke="#221a17" strokeWidth=".65" />
