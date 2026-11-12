@@ -17,6 +17,7 @@ const WORD_GAP_EM = 0.22;
 export function Hero() {
   const root = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
+  const lettersRef = useRef<HTMLButtonElement>(null);
 
   // Fit the name to the measure (one line on desktop, two on mobile).
   useEffect(() => {
@@ -29,7 +30,7 @@ export function Hero() {
       const em = oneLine
         ? widths.reduce((a, b) => a + b, 0) + WORD_GAP_EM * (widths.length - 1)
         : Math.max(...widths);
-      if (em > 0) h1.style.fontSize = `${(h1.clientWidth / em) * 0.89}px`;
+      if (em > 0) h1.style.fontSize = `${(h1.clientWidth / em) * 0.98}px`;
     };
     fit();
     document.fonts?.ready.then(fit);
@@ -61,6 +62,30 @@ export function Hero() {
     return () => mm.revert();
   }, []);
 
+  const playName = () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const letters = lettersRef.current?.querySelectorAll<HTMLElement>("[data-letter]");
+    if (!letters) return;
+    gsap.killTweensOf(letters);
+    gsap.fromTo(
+      letters,
+      { yPercent: (i: number) => (i % 2 ? 18 : -18), rotation: (i: number) => (i % 2 ? 7 : -7) },
+      { yPercent: 0, rotation: 0, duration: 0.82, stagger: { each: 0.045, from: "center" }, ease: "elastic.out(1, 0.55)", overwrite: true }
+    );
+  };
+
+  const liftLetter = (letter: HTMLElement, enter: boolean) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.to(letter, {
+      yPercent: enter ? -14 : 0,
+      rotation: enter ? -5 : 0,
+      scale: enter ? 1.045 : 1,
+      duration: enter ? 0.3 : 0.55,
+      ease: enter ? "power2.out" : "elastic.out(1, 0.65)",
+      overwrite: true
+    });
+  };
+
   const feature = PROJECTS.find((p) => !p.placeholder);
 
   return (
@@ -72,25 +97,39 @@ export function Hero() {
     >
       <h1
         ref={nameRef}
-        aria-label={`${PROFILE.firstName} ${PROFILE.lastName}`}
-        className="display cutout flex flex-col text-[21vw] md:flex-row md:gap-[0.22em] md:text-[12vw]"
+        className="display cutout w-full text-[22vw] md:text-[13vw]"
       >
-        {WORDS.map((word) => (
-          <span
-            key={word}
-            aria-hidden="true"
-            className="relative -mb-[0.1em] flex flex-auto justify-between overflow-hidden pb-[0.24em] pt-[0.06em]"
-          >
-            {word.split("").map((ch, i) => (
-              <span key={i} data-letter className="inline-block origin-bottom">
-                {ch}
+        <button
+          ref={lettersRef}
+          type="button"
+          aria-label={`${PROFILE.firstName} ${PROFILE.lastName} — play with the lettering`}
+          title="Tap to make the letters dance"
+          onClick={playName}
+          className="group flex w-full cursor-pointer flex-col text-left focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream md:flex-row md:gap-[0.22em]"
+        >
+          {WORDS.map((word) => (
+            <span
+              key={word}
+              aria-hidden="true"
+              className="relative -mb-[0.1em] flex flex-auto justify-between overflow-hidden pb-[0.24em] pt-[0.06em]"
+            >
+              {word.split("").map((ch, i) => (
+                <span
+                  key={i}
+                  data-letter
+                  onPointerEnter={(e) => { if (e.pointerType === "mouse") liftLetter(e.currentTarget, true); }}
+                  onPointerLeave={(e) => { if (e.pointerType === "mouse") liftLetter(e.currentTarget, false); }}
+                  className="inline-block origin-bottom"
+                >
+                  {ch}
+                </span>
+              ))}
+              <span data-probe className="invisible absolute left-0 top-0 whitespace-nowrap" style={{ fontSize: 100, letterSpacing: "-0.065em" }}>
+                {word}
               </span>
-            ))}
-            <span data-probe className="invisible absolute left-0 top-0 whitespace-nowrap" style={{ fontSize: 100, letterSpacing: "-0.065em" }}>
-              {word}
             </span>
-          </span>
-        ))}
+          ))}
+        </button>
       </h1>
 
       <div className="mt-auto flex flex-col gap-5 pb-[clamp(1.25rem,3vw,2.5rem)] pt-[30vh] md:flex-row md:items-end md:justify-between md:pt-10">
