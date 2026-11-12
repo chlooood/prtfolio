@@ -13,11 +13,11 @@ Everything the site says is in [`src/content/site.ts`](src/content/site.ts).
 Search it for `TODO` to find what's still waiting on real content; placeholder
 entries show on the page with a red **PLACEHOLDER** tag until replaced.
 
-- Projects: add an entry to `PROJECTS`. Give it a `figure` to pair it with an
+- Projects: add an entry to `PROJECTS`, and provide a truthful `story` and `evidenceImages` list. Give it a `figure` to pair it with an
   interactive demo (`OddsSim`, `NdtmFig`, `RunwayFig` are the existing ones);
   without one it is listed in a plain index under the others.
 - Photos: create `public/soccer/`, `public/running/`, `public/travel/`, and `public/hiking/` as needed. Add items to each pursuit’s `photos` array as `{ src: "/soccer/01.jpg", alt: "Description", caption: "Optional note" }`. Click a tree-ring disc to reveal its inline slideshow; empty galleries display a quiet coming-soon state.
-- Exchange: edit `EXCHANGE_PLACES` in `src/content/site.ts`; each place has an illustrated map label, a short introduction and optional links to actual dispatches. The archive stays empty until real posts exist.
+- Exchange: edit `EXCHANGE_PLACES` in `src/content/site.ts`; each place has an illustrated map label, a short introduction, optional `photos` and `notes` for a real photo essay, and optional links to published posts. Leave empty arrays until real content exists.
 
 ## Structure
 
@@ -40,3 +40,7 @@ watercolour-landscape direction) and `archive/vite-v1` (the original Vite site).
 ## Development notes
 
 The smaller, calmer type and spacing are intentional: preserve the illustrated river as the dominant feature. Boats are decorative and fan out when they reach the sea. Do not turn the four Off the Clock discs into route links; they expand an inline scrapbook gallery.
+
+## Editorial watercolor concept (experimental branch)
+
+The `design/soft-watercolor-editorial` branch is a separate design experiment, keeping the river and bold Bricolage masthead while softening its pigments to rose, lavender, apricot and lake blue. Nav is quiet text rather than little paper scraps. Featured work contains expandable evidence slots. `src/app/icon.svg` is a hand-designed watercolor CD monogram. Keep uploaded personal material authentic and place it under `public/`.
