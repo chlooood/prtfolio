@@ -127,6 +127,47 @@ export const FINISHED: Book[] = [
 ];
 
 /* ───────────────────────────────────────────────────────────────────────────
+ *  EXCHANGE — place labels on the illustrated editorial cover.
+ *  Add real posts as { title, href } when they exist. The place labels below
+ *  are editable staging entries, not claims of published travel stories.
+ * ─────────────────────────────────────────────────────────────────────────── */
+export type ExchangePlace = {
+  id: string;
+  name: string;
+  x: string;
+  y: string;
+  description: string;
+  posts: { title: string; href: string }[];
+};
+
+export const EXCHANGE_PLACES: ExchangePlace[] = [
+  {
+    id: "vancouver",
+    name: "Vancouver",
+    x: "24%",
+    y: "52%",
+    description: "The starting point. A shelf for dispatches from home, before the next departure.",
+    posts: [],
+  },
+  {
+    id: "toronto",
+    name: "Toronto",
+    x: "73%",
+    y: "40%",
+    description: "A place-marker ready for stories, photographs, and the little details that make a city memorable.",
+    posts: [],
+  },
+  {
+    id: "elsewhere",
+    name: "Next stop",
+    x: "65%",
+    y: "78%",
+    description: "An empty page for wherever the road leads next. Update the place name when the journey begins.",
+    posts: [],
+  },
+];
+
+/* ───────────────────────────────────────────────────────────────────────────
  *  OFF THE CLOCK
  *  Each pursuit is a title on a tree-ring disc. Two optional extras, both
  *  hidden until you fill them in:
