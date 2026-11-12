@@ -157,35 +157,21 @@ export function Hero() {
           <br />↓
         </p>
 
-        <Paper
-          as="dl"
-          tilt={1.4}
-          flat
-          sheet="var(--color-mustard)"
+        <dl
           data-hero-in
-          data-drag
-          className="label grid max-w-[22rem] grid-cols-[auto_1fr] gap-x-4 gap-y-2 self-end px-5 py-4 md:w-[26%]"
+          className="grid max-w-[22rem] grid-cols-[auto_1fr] gap-x-5 gap-y-3 self-end border-l border-cream/65 py-3 pl-5 font-serif text-[.98rem] text-cream drop-shadow-[0_2px_3px_#293143] md:w-[30%]"
         >
-          <dt className="text-ink/70">Based</dt>
-          <dd>
-            {NOW.basedIn}
-            {NOW.currentlyIn && <span className="text-ink/70"> · now in {NOW.currentlyIn}</span>}
-          </dd>
-          <dt className="text-ink/70">Studying</dt>
-          <dd>
-            {PROFILE.role}, &rsquo;{String(PROFILE.gradYear).slice(2)}
-          </dd>
+          <dt className="italic opacity-75">Based</dt>
+          <dd>{NOW.basedIn}{NOW.currentlyIn && <span> · now in {NOW.currentlyIn}</span>}</dd>
+          <dt className="italic opacity-75">Studying</dt>
+          <dd>{PROFILE.role}, &rsquo;{String(PROFILE.gradYear).slice(2)}</dd>
           {feature && (
             <>
-              <dt className="text-ink/70">Building</dt>
-              <dd>
-                <a href="#built" className="link">
-                  {feature.name}
-                </a>
-              </dd>
+              <dt className="italic opacity-75">Building</dt>
+              <dd><a href="#built" className="underline decoration-cream/60 underline-offset-4 hover:decoration-cream">{feature.name}</a></dd>
             </>
           )}
-        </Paper>
+        </dl>
       </div>
     </section>
   );
