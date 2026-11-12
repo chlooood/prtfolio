@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger, MOTION_OK } from "@/lib/gsap";
 import { INTERESTS, PURSUITS } from "@/content/site";
 import { CutTitle } from "./CutTitle";
@@ -119,6 +119,26 @@ function Ribbon() {
  * each with a caption scrap tucked under its edge.
  */
 export function OffClock() {
+  const [selected, setSelected] = useState<string | null>(null);
+  const [slide, setSlide] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const pursuit = PURSUITS.find((entry) => entry.title === selected);
+  const photos = pursuit?.photos ?? [];
+  const hasMedia = photos.length > 0;
+  const count = photos.length;
+
+  // The gallery gently turns like a stack of prints; motion preference wins.
+  useEffect(() => {
+    if (!selected || count < 2 || paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setInterval(() => setSlide((current) => (current + 1) % count), 5400);
+    return () => window.clearInterval(timer);
+  }, [selected, count, paused]);
+
+  const choose = (title: string) => {
+    setSelected((current) => current === title ? null : title);
+    setSlide(0);
+  };
+
   return (
     <section id="off-the-clock" className="pt-[clamp(10rem,42vh,26rem)]">
       <CutTitle
@@ -127,48 +147,104 @@ export function OffClock() {
         className="px-[var(--pad)]"
       />
 
-      <ul className="mt-[clamp(2rem,6vw,5rem)] grid grid-cols-2 gap-x-[4vw] gap-y-16 px-[var(--pad)] lg:grid-cols-4 lg:gap-x-0">
+      <ul className="mt-[clamp(2rem,6vw,5rem)] grid grid-cols-2 gap-x-[clamp(.75rem,4vw,4rem)] gap-y-12 px-[var(--pad)] lg:grid-cols-4 lg:gap-x-[2vw]">
         {PURSUITS.map((p, i) => (
           <li
             key={p.title}
             data-reveal
-            data-drag
-            className={`disc relative ${i % 2 ? "lg:mt-[7vw]" : ""} ${i > 0 ? "lg:-ml-[2.5vw]" : ""}`}
-            style={{ zIndex: PURSUITS.length - i }}
+            className={`disc relative min-w-0 ${i % 2 ? "lg:mt-[4vw]" : ""}`}
           >
-            <div className="aspect-square w-full">
-              <RingDisc i={i} />
-            </div>
-            <Paper
-              flat
-              tilt={i % 2 ? 2 : -2.5}
-              className="relative -mt-[16%] ml-[6%] w-fit max-w-[88%] px-4 py-3 sm:px-5 sm:py-4"
+            <button
+              type="button"
+              aria-expanded={selected === p.title}
+              aria-controls="pursuit-gallery"
+              onClick={() => choose(p.title)}
+              className="group block w-full cursor-pointer text-left focus-visible:outline-offset-4"
             >
-              <p className="label text-muted">{pad(i + 1)}</p>
-              <h3 className="display mt-1 text-[clamp(1.5rem,2.6vw,2.5rem)]">{p.title}</h3>
-              {p.photos && p.photos.length > 0 && (
-                <ul className="mt-3 grid grid-cols-3 gap-1.5">
-                  {p.photos.slice(0, 3).map((src) => (
-                    <li key={src} className="aspect-[3/4] bg-paper-2">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {p.strava && (
-                <iframe
-                  src={p.strava}
-                  title={`${p.title} on Strava`}
-                  loading="lazy"
-                  className="mt-3 h-[22rem] w-full border-0"
-                />
-              )}
-            </Paper>
+              <div className="aspect-square w-full transition-transform duration-500 ease-[var(--ease-expo)] group-hover:-translate-y-2">
+                <RingDisc i={i} />
+              </div>
+              <Paper
+                flat
+                tilt={i % 2 ? 2 : -2.5}
+                className="relative -mt-[16%] ml-[6%] w-fit max-w-[90%] px-4 py-3 sm:px-5 sm:py-4"
+              >
+                <span className="label block text-muted">{pad(i + 1)} / Open scrapbook</span>
+                <span className="statement mt-1 block text-[clamp(1.5rem,2.5vw,2.5rem)]">
+                  {p.title}<span className="ml-2 text-lg text-vermilion" aria-hidden="true">{selected === p.title ? "−" : "+"}</span>
+                </span>
+              </Paper>
+            </button>
           </li>
         ))}
       </ul>
 
+      <div id="pursuit-gallery" className="px-[var(--pad)]" aria-live="polite">
+        {pursuit && (
+          <Paper
+            key={pursuit.title}
+            tilt={-0.45}
+            className="mx-auto mt-12 max-w-5xl px-[clamp(1.25rem,4vw,3rem)] py-[clamp(1.5rem,4vw,3rem)] motion-safe:animate-[exchange-unfold_.55s_cubic-bezier(.16,1,.3,1)_both]"
+          >
+            <div className="flex flex-wrap items-start justify-between gap-5 border-b border-rule pb-5">
+              <div>
+                <p className="label text-vermilion">The scrapbook / {pursuit.title}</p>
+                <h3 className="statement mt-2 text-[clamp(2rem,5vw,4rem)]">{pursuit.title}, in pictures.</h3>
+              </div>
+              <button type="button" onClick={() => setSelected(null)} className="tag label cursor-pointer border border-ink focus-visible:outline-vermilion">
+                Close ×
+              </button>
+            </div>
+            {hasMedia ? (
+              <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocusCapture={() => setPaused(true)} onBlurCapture={() => setPaused(false)}>
+                <figure className="mt-7">
+                  <div className="relative mx-auto aspect-[4/3] max-h-[37rem] overflow-hidden bg-paper-2 sm:aspect-[16/10]">
+                    {photos.map((photo, i) => (
+                      // Images remain on their original visual plane and crossfade like prints.
+                      <img
+                        key={photo.src}
+                        src={photo.src}
+                        alt={photo.alt}
+                        loading="lazy"
+                        aria-hidden={i !== slide}
+                        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 motion-reduce:transition-none ${i === slide ? "opacity-100" : "pointer-events-none opacity-0"}`}
+                      />
+                    ))}
+                  </div>
+                  <figcaption className="mt-3 flex items-start justify-between gap-4">
+                    <span className="font-serif text-lg italic text-ink-2">{photos[slide]?.caption ?? pursuit.title}</span>
+                    <span className="label shrink-0 text-muted">{pad(slide + 1)} / {pad(count)}</span>
+                  </figcaption>
+                </figure>
+                {count > 1 && (
+                  <div className="mt-5 flex items-center justify-between gap-4">
+                    <button type="button" onClick={() => setSlide((slide + count - 1) % count)} className="tag label cursor-pointer border border-rule">
+                      ← Previous
+                    </button>
+                    <div className="flex items-center gap-2" role="group" aria-label="Choose photograph">
+                      {photos.map((photo, i) => (
+                        <button key={photo.src} type="button" aria-label={`Photo ${i + 1}`} aria-current={i === slide ? "true" : undefined} onClick={() => setSlide(i)}
+                          className={`h-2.5 w-2.5 cursor-pointer rounded-full border border-ink ${i === slide ? "bg-vermilion" : "bg-paper-2"}`} />
+                      ))}
+                    </div>
+                    <button type="button" onClick={() => setSlide((slide + 1) % count)} className="tag label cursor-pointer border border-rule">
+                      Next →
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="mt-7 grid min-h-52 place-content-center border border-dashed border-ink/30 bg-paper-2/40 px-6 py-12 text-center">
+                <p className="font-serif text-3xl italic">A few good moments, soon.</p>
+                <p className="label mt-4 text-muted">Photographs for {pursuit.title.toLowerCase()} are still being collected.</p>
+              </div>
+            )}
+            {pursuit.strava && (
+              <iframe src={pursuit.strava} title={`${pursuit.title} on Strava`} loading="lazy" className="mt-6 h-[22rem] w-full border-0" />
+            )}
+          </Paper>
+        )}
+      </div>
       <Ribbon />
     </section>
   );
