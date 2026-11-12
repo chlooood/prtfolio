@@ -74,7 +74,7 @@ export function Contact() {
         <p>
           © {new Date().getFullYear()} {PROFILE.firstName} {PROFILE.lastName}
         </p>
-        <p>Painted in code · set in Fraunces &amp; DM Mono</p>
+        <p>Painted in code · set in Bricolage, Fraunces &amp; DM Mono</p>
         <p>
           <a href="#top" className="link">
             Back to the source ↑
