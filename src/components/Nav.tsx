@@ -5,11 +5,8 @@ import { NOW, PROFILE } from "@/content/site";
 
 const LINKS = [
   { href: "#built", label: "Built" },
-  { href: "#worked", label: "Worked" },
   { href: "#read", label: "Read" },
   { href: "#off-the-clock", label: "Off the clock" },
-  { href: "#errata", label: "Errata" },
-  { href: "#contact", label: "Contact" },
 ];
 
 function useClock(timeZone: string) {

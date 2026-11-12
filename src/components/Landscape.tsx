@@ -10,7 +10,7 @@ import { useEffect, useRef } from "react";
  *
  *   · paint itself in — pencil underdrawing first, then the washes bloom
  *   · set the sun as the hero scrolls away
- *   · return at the end of the page as the same view by moonlight (`night`)
+ *   · come back as the same view at dusk mid-page and by moonlight at the end
  *
  * Three.js is imported lazily. With reduced motion it renders one finished
  * frame and stops.
@@ -31,6 +31,8 @@ const FRAG = /* glsl */ `
   uniform float uTime;
   uniform float uReveal;
   uniform float uNight;
+  uniform float uDusk;
+  uniform float uFull;
   uniform float uScroll;
   uniform vec2 uMouse;
   uniform vec3 uPaper;
@@ -72,6 +74,11 @@ const FRAG = /* glsl */ `
     return mix(col * mix(vec3(1.0), pig, dens), mix(col, pig, dens), uNight);
   }
 
+  // One pigment, three times of day.
+  vec3 tone(vec3 day, vec3 dusk, vec3 night) {
+    return mix(mix(day, dusk, uDusk), night, uNight);
+  }
+
   // Washes bloom in unevenly, the way water carries pigment across paper.
   float paintIn(vec2 p, float seed, float delay) {
     return smoothstep(0.0, 0.3, uReveal * 1.75 - delay - fbm(p * 1.7 + seed) * 0.55);
@@ -109,45 +116,51 @@ const FRAG = /* glsl */ `
     vec3 paper = uPaper * (1.0 - (grain - 0.5) * 0.05 * (1.0 - uNight)) + (grain - 0.5) * 0.018 * uNight;
     vec3 col = paper;
 
-    // ── Sky: a loose wash kept to the right, so the left stays clean paper.
-    float skyMask = smoothstep(0.15, 0.7, xn) * smoothstep(1.0, 0.6, p.y) * smoothstep(0.1, 0.3, p.y);
+    // ── Sky: a loose wash. In the hero it keeps to the right so the left
+    // stays clean paper for the headline; elsewhere it runs the full width.
+    float skyX = mix(smoothstep(0.15, 0.7, xn), 1.0, uFull);
+    float skyMask = skyX * smoothstep(1.0, 0.6, p.y) * smoothstep(0.1, 0.3, p.y);
     float cloud = fbm(vec2(p.x * 1.1 - uTime * 0.006, p.y * 2.6) + 3.0);
-    vec3 skyPig = mix(vec3(0.70, 0.81, 0.88), vec3(0.17, 0.21, 0.31), uNight);
+    vec3 skyPig = tone(vec3(0.70, 0.81, 0.88), vec3(0.95, 0.70, 0.62), vec3(0.17, 0.21, 0.31));
     col = glaze(col, skyPig, skyMask * (0.18 + 0.8 * smoothstep(0.35, 0.72, cloud)) * paintIn(p, 1.0, 0.0) * mix(0.85, 0.7, uNight));
+    // A second, cooler pass high in the dusk sky.
+    col = glaze(col, vec3(0.74, 0.72, 0.86), uDusk * smoothstep(0.55, 0.95, p.y) * (0.3 + 0.5 * fbm(p * 1.4 + 9.0)) * paintIn(p, 1.5, 0.05));
 
     // Stars, night only.
     float star = step(0.9982, hash(floor(p * uRes.y * 0.45)));
     col += star * 0.55 * uNight * smoothstep(0.35, 0.7, p.y) * (0.6 + 0.4 * sin(uTime * 1.5 + p.x * 40.0));
 
-    // ── Sun / moon. It sinks as the hero scrolls away.
-    // Sits lower on portrait screens, clear of the headline.
-    float sunY = mix(0.5, 0.62, smoothstep(0.7, 1.4, asp));
-    vec2 sun = vec2(asp * 0.70 + uMouse.x * 0.012, sunY - uScroll * 0.24 + uMouse.y * 0.006);
+    // ── Sun / moon. High on the right in the morning (and it sinks as the
+    // hero scrolls away), low on the left at dusk, back on the right at night.
+    float sunY = mix(mix(0.5, 0.62, smoothstep(0.7, 1.4, asp)), 0.47, uDusk);
+    float sunX = mix(0.70, 0.30, uDusk);
+    vec2 sun = vec2(asp * sunX + uMouse.x * 0.012, sunY - uScroll * 0.24 + uMouse.y * 0.006);
     float sd = length(p - sun);
-    vec3 glowPig = mix(vec3(0.97, 0.79, 0.64), vec3(0.30, 0.35, 0.44), uNight);
-    col = glaze(col, glowPig, exp(-sd * 3.0) * (0.75 + uScroll * 0.6) * paintIn(p, 2.0, 0.05));
+    vec3 glowPig = tone(vec3(0.97, 0.79, 0.64), vec3(0.99, 0.66, 0.38), vec3(0.30, 0.35, 0.44));
+    col = glaze(col, glowPig, exp(-sd * mix(3.0, 2.0, uDusk)) * (0.75 + uScroll * 0.6 + uDusk * 0.2) * paintIn(p, 2.0, 0.05));
 
-    float r = min(0.066, asp * 0.13);
+    float r = min(0.066, asp * 0.13) * (1.0 + uDusk * 0.25);
     float disc = smoothstep(r, r - 0.005, sd + (noise(p * 30.0) - 0.5) * 0.006);
     float ring = exp(-abs(sd - r + 0.004) * 110.0) * 0.35 * disc;
-    vec3 sunPig = mix(vec3(0.84, 0.30, 0.15), vec3(0.94, 0.91, 0.83), uNight);
+    vec3 sunPig = tone(vec3(0.84, 0.30, 0.15), vec3(0.86, 0.27, 0.12), vec3(0.94, 0.91, 0.83));
     col = glaze(col, sunPig, (disc * (0.72 + 0.3 * fbm(p * 5.0)) + ring) * (0.85 + 0.3 * noise(p * 240.0)) * paintIn(p, 3.0, 0.1));
 
     // ── Four ridges, far to near. Nearer ones slide more (parallax).
     float par = uMouse.x * 0.02 + uScroll * 0.22;
+    float lean = tilt * (1.0 - uFull);
 
-    float h1 = 0.47 + 0.20 * tilt + 0.27 * ridgeH(p.x + par * 0.2, 11.0, 1.25, 0.5);
-    col = layer(col, p, h1, mix(vec3(0.66, 0.75, 0.82), vec3(0.24, 0.29, 0.37), uNight), 0.62, 11.0, 0.15, 0.34);
+    float h1 = 0.47 + 0.20 * lean + 0.27 * ridgeH(p.x + par * 0.2, 11.0, 1.25, 0.5);
+    col = layer(col, p, h1, tone(vec3(0.66, 0.75, 0.82), vec3(0.72, 0.62, 0.74), vec3(0.24, 0.29, 0.37)), 0.62, 11.0, 0.15, 0.34);
 
-    float h2 = 0.385 + 0.13 * tilt + 0.24 * ridgeH(p.x + par * 0.45, 23.0, 1.7, 0.42);
-    col = layer(col, p, h2, mix(vec3(0.49, 0.61, 0.68), vec3(0.18, 0.23, 0.29), uNight), 0.7, 23.0, 0.28, 0.32);
+    float h2 = 0.385 + 0.13 * lean + 0.24 * ridgeH(p.x + par * 0.45, 23.0, 1.7, 0.42);
+    col = layer(col, p, h2, tone(vec3(0.49, 0.61, 0.68), vec3(0.55, 0.47, 0.64), vec3(0.18, 0.23, 0.29)), 0.7, 23.0, 0.28, 0.32);
 
-    float h3 = 0.295 + 0.05 * tilt + 0.17 * ridgeH(p.x + par * 0.7, 37.0, 2.1, 0.34);
-    col = layer(col, p, h3, mix(vec3(0.36, 0.50, 0.47), vec3(0.12, 0.17, 0.18), uNight), 0.8, 37.0, 0.4, 0.3);
+    float h3 = 0.295 + 0.05 * lean + 0.17 * ridgeH(p.x + par * 0.7, 37.0, 2.1, 0.34);
+    col = layer(col, p, h3, tone(vec3(0.36, 0.50, 0.47), vec3(0.37, 0.34, 0.50), vec3(0.12, 0.17, 0.18)), 0.8, 37.0, 0.4, 0.3);
 
     float trees = pow(noise(vec2(p.x * 120.0, 3.0)), 2.0) * 0.016 + noise(vec2(p.x * 40.0, 7.0)) * 0.01;
     float h4 = 0.215 + 0.10 * ridgeH(p.x + par, 51.0, 2.8, 0.2) + trees;
-    col = layer(col, p, h4, mix(vec3(0.21, 0.32, 0.27), vec3(0.04, 0.05, 0.035), uNight), 0.92, 51.0, 0.52, 0.5);
+    col = layer(col, p, h4, tone(vec3(0.21, 0.32, 0.27), vec3(0.17, 0.18, 0.26), vec3(0.04, 0.05, 0.035)), 0.92, 51.0, 0.52, 0.5);
 
     // ── Water: dry-brushed, paper showing through, the sun broken across it.
     float wl = 0.145;
@@ -156,9 +169,9 @@ const FRAG = /* glsl */ `
     float streak = noise(vec2(p.x * 5.0 + uTime * 0.02, p.y * 170.0));
     float dry = smoothstep(0.55, 0.75, streak);
     float depth = (wl - p.y) / wl;
-    vec3 w = glaze(paper, mix(vec3(0.60, 0.72, 0.80), vec3(0.14, 0.19, 0.27), uNight),
+    vec3 w = glaze(paper, tone(vec3(0.60, 0.72, 0.80), vec3(0.86, 0.66, 0.64), vec3(0.14, 0.19, 0.27)),
                    (0.78 - 0.35 * depth) * (1.0 - dry * 0.9) * (0.8 + 0.3 * fbm(p * 3.0)) * wIn);
-    w = glaze(w, mix(vec3(0.28, 0.40, 0.38), vec3(0.06, 0.08, 0.07), uNight),
+    w = glaze(w, tone(vec3(0.28, 0.40, 0.38), vec3(0.30, 0.28, 0.42), vec3(0.06, 0.08, 0.07)),
               exp(-(wl - p.y) * 36.0) * 0.8 * (1.0 - dry * 0.6) * wIn);
     float band = exp(-pow((p.x - sun.x) / 0.07, 2.0));
     float dash = smoothstep(0.5, 0.62, noise(vec2(p.x * 22.0, p.y * 120.0 - uTime * 0.12)));
@@ -167,22 +180,27 @@ const FRAG = /* glsl */ `
 
     // Feather the top into flat paper so the canvas has no visible edge.
     col = mix(uPaper, col, smoothstep(1.0, 0.8, vUv.y));
+    // Dusk is a vignette on the page, so its water dissolves into paper too.
+    col = mix(col, mix(uPaper, col, smoothstep(0.0, 0.09, vUv.y - (noise(vec2(p.x * 6.0, 2.0)) - 0.5) * 0.03)), uDusk);
 
     gl_FragColor = vec4(col, 1.0);
   }
 `;
 
 export function Landscape({
-  night = false,
+  phase = "day",
   delay = 0,
   className = "",
 }: {
-  night?: boolean;
+  /** Which hour the view is painted at. */
+  phase?: "day" | "dusk" | "night";
   /** Seconds to wait before painting in (the hero waits for the loader). */
   delay?: number;
   className?: string;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const night = phase === "night";
+  const dusk = phase === "dusk";
 
   useEffect(() => {
     const canvas = ref.current;
@@ -206,9 +224,11 @@ export function Landscape({
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const uniforms = {
         uRes: { value: new THREE.Vector2(1, 1) },
-        uTime: { value: night ? 40 : 0 },
+        uTime: { value: night ? 40 : dusk ? 20 : 0 },
         uReveal: { value: reduce ? 1 : 0 },
         uNight: { value: night ? 1 : 0 },
+        uDusk: { value: dusk ? 1 : 0 },
+        uFull: { value: phase === "day" ? 0 : 1 },
         uScroll: { value: 0 },
         uMouse: { value: new THREE.Vector2(0, 0) },
         uPaper: { value: new THREE.Color().setRGB(...(night ? [25 / 255, 28 / 255, 18 / 255] : [242 / 255, 238 / 255, 227 / 255]) as [number, number, number]) },
@@ -252,7 +272,7 @@ export function Landscape({
           uniforms.uReveal.value = Math.min(1, uniforms.uReveal.value + dt / 3.4);
         }
         uniforms.uMouse.value.lerp(target, 1 - Math.pow(0.02, dt));
-        if (!night) {
+        if (phase === "day") {
           const rect = canvas.getBoundingClientRect();
           uniforms.uScroll.value = Math.min(1, Math.max(0, -rect.top / Math.max(rect.height, 1) + 0.12));
         }
@@ -273,7 +293,7 @@ export function Landscape({
           if (visible && !was && !seenAt) seenAt = performance.now();
           start();
         },
-        { threshold: night ? 0.25 : 0 },
+        { threshold: phase === "day" ? 0 : 0.25 },
       );
       io.observe(canvas);
       document.addEventListener("visibilitychange", start);
@@ -295,7 +315,7 @@ export function Landscape({
       disposed = true;
       cleanup();
     };
-  }, [night, delay]);
+  }, [phase, night, dusk, delay]);
 
   return (
     <canvas
@@ -304,7 +324,9 @@ export function Landscape({
       aria-label={
         night
           ? "Watercolour of mountains across the water at night, under a pale moon"
-          : "Watercolour of blue mountain ridges across the water, with a red sun"
+          : dusk
+            ? "Watercolour of the same mountains at dusk, violet ridges under a low orange sun"
+            : "Watercolour of blue mountain ridges across the water, with a red sun"
       }
       className={className}
     />

@@ -70,7 +70,7 @@ export function OffClock() {
   return (
     <section id="off-the-clock" className="pb-[clamp(5rem,12vw,11rem)]">
       <SectionHead
-        index="04"
+        index="03"
         title={
           <>
             Off the

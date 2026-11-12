@@ -38,8 +38,6 @@ export const CONTACT = {
   email: null as string | null,
   linkedin: "https://linkedin.com/in/chloe-dacey",
   github: "https://github.com/chlooood",
-  /* TODO: this line is mine, not yours — rewrite or delete. */
-  note: "No public inbox. LinkedIn is the quickest way to reach me.",
 };
 
 /* ───────────────────────────────────────────────────────────────────────────
@@ -92,61 +90,6 @@ export const PROJECTS: Project[] = [
 ];
 
 /* ───────────────────────────────────────────────────────────────────────────
- *  WORKED — experience, newest first.
- * ─────────────────────────────────────────────────────────────────────────── */
-export type Role = {
-  org: string;
-  role: string;
-  location: string;
-  period: string;
-  notes: string[];
-};
-
-export const EXPERIENCE: Role[] = [
-  {
-    org: "Nestlé Canada",
-    role: "Bilingual Operations & Process Intern",
-    location: "Brampton, ON",
-    period: "May 2026 — present", // TODO: confirm this is still current
-    notes: [
-      "Bilingual (EN/FR) B2B order entry and service in SAP for a team doing $6M in seasonal sales, across 100+ retail accounts.",
-      "Built the Power BI analysis behind moving low-touch accounts to self-serve; adopted into the team’s account strategy.",
-      "Designed agent-performance and order-processing dashboards now used in weekly team evaluations.",
-    ],
-  },
-  {
-    org: "UBC Product Management Club",
-    role: "VP Executive Development",
-    location: "Vancouver, BC",
-    period: "Sept 2025 — present",
-    notes: [
-      "Co-founded an internal fellowship simulating end-to-end product development; designed the curriculum, grew it to 20+ fellows at 100% completion.",
-      "Run résumé and interview workshops with industry recruiters; lead corporate outreach for the club’s case competition.",
-    ],
-  },
-  {
-    org: "180 Degrees Consulting UBC",
-    role: "Analyst",
-    location: "Vancouver, BC",
-    period: "Sept 2025 — May 2026",
-    notes: [
-      "Built the financial model behind a business plan that won Mount Adaklu, Ghana bank financing for a sustainable tourism development.",
-      "Structured 10+ cost drivers across pricing sensitivity and breakeven scenarios, from an ambiguous brief with no template.",
-    ],
-  },
-  {
-    org: "Oakville Soccer Club",
-    role: "Summer Camp Counselor / Youth Soccer Coach",
-    location: "Oakville, ON",
-    period: "June 2021 — Aug 2025",
-    notes: [
-      "Designed and delivered programming for 100+ campers across concurrent sessions.",
-      "Onboarded and coordinated 40+ volunteers over four summers.",
-    ],
-  },
-];
-
-/* ───────────────────────────────────────────────────────────────────────────
  *  READ — what's open now, and what's finished (newest first).
  * ─────────────────────────────────────────────────────────────────────────── */
 export type Book = { title: string; author: string };
@@ -193,14 +136,6 @@ export const INTERESTS = [
 ];
 
 /* ───────────────────────────────────────────────────────────────────────────
- *  ERRATA — "what I got wrong". Yours to write; nothing here is invented.
- *  Shape: { claim: what you believed, correction: what changed your mind }.
- *  Leave the array empty and three ruled placeholder rows render instead.
- * ─────────────────────────────────────────────────────────────────────────── */
-export type Erratum = { claim: string; correction: string };
-export const ERRATA: Erratum[] = [];
-
-/* ───────────────────────────────────────────────────────────────────────────
  *  CITATIONS — the footnotes. Referenced by number via <Cite n={1} />.
  *  Order matters: the index in this array + 1 is the footnote number.
  * ─────────────────────────────────────────────────────────────────────────── */
@@ -208,5 +143,4 @@ export const CITATIONS = [
   "Citations available on request.",
   "The combined major in Business and Computer Science at UBC — BUCS, to the people in it. Class of 2029.",
   "Illustrative only. The figure is a small seeded simulation running in your browser, written for this page; it is not output from the engine.",
-  "Figures as they appear on my résumé.",
 ];
