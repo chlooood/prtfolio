@@ -75,8 +75,8 @@ body {
 /* Display: Fraunces at its heaviest, softest and most eccentric. */
 .display {
   font-family: var(--font-display);
-  font-weight: 780;
-  font-variation-settings: "SOFT" 20, "WONK" 0, "opsz" 120;
+  font-weight: 900;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
   letter-spacing: -0.035em;
   line-height: 0.96;
 }
