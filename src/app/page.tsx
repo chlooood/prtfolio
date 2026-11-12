@@ -8,8 +8,9 @@ import { OffClock } from "@/components/OffClock";
 import { Premise } from "@/components/Premise";
 import { Read } from "@/components/Read";
 import { RiverMap } from "@/components/RiverMap";
+import { Sun } from "@/components/Sun";
 
-/* Layers, back to front: the map · the boats · the paper · the nav tags. */
+/* Layers, back to front: the map · the boats · the paper · the sun · the nav tags. */
 export default function Home() {
   return (
     <>
@@ -24,6 +25,7 @@ export default function Home() {
         <OffClock />
       </main>
       <Contact />
+      <Sun />
       {/* Last, so its ScrollTriggers are created after every section's. */}
       <MotionRoot />
     </>

@@ -45,7 +45,11 @@ Back to front:
 2. **The boats** (`Boats`) — four small watercolour sailboats, seen from above.
 3. **The paper** — every piece of content: sheets, tags, spines, ring discs,
    cut-out type.
-4. **The nav** — a handful of paper tags pinned along the top.
+4. **The sun** (`Sun`) — pinned to the screen. It rises bottom-left as you
+   leave the source, is overhead mid-page and sets bottom-right at the sea.
+   Solid gouache against the map; a transparent wash where it crosses paper,
+   so text reads through it.
+5. **The nav** — a handful of paper tags pinned along the top.
 
 Boats sail between the map and the paper, so they never cross text.
 
