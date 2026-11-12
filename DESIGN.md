@@ -49,47 +49,41 @@ Back to front:
    leave the source, is overhead mid-page and sets bottom-right at the sea.
    Solid gouache against the map; a transparent wash where it crosses paper,
    so text reads through it.
-5. **The nav** — a handful of paper tags pinned along the top.
+5. **The nav** — a quiet translucent paper-colored text bar; no tag pile.
 
 Boats sail between the map and the paper, so they never cross text.
 
-## Colour
+## Colour — watercolor editorial experiment
 
-Paper and ink:
+This branch shifts the original saturated gouache into a softer family of
+dusk-blue, lilac, dusty rose, apricot, sage and cream. The **map shader**
+(`RiverMap.tsx`) contains three related eight-color palettes, and its
+water/sky colors are independently tuned to match the CSS theme.
 
-| Token | Value | Use |
+| Token | Value | Intended use |
 | --- | --- | --- |
-| `paper` | `#f4ecdb` | Sheets |
-| `paper-2` | `#e9ddc3` | Small tags |
-| `cream` | `#f7eed8` | Cut-out type on the map, birds |
-| `ink` | `#221a17` | Text |
-| `ink-2` / `muted` | `#4d4038` / `#6b5d50` | Secondary text, labels (AA on paper) |
+| `paper` | `#f6efe7` | Cream editorial ground |
+| `paper-2` | `#ebddcb` | Subtle secondary ground |
+| `ink` | `#2a1f27` | Reading text |
+| `vermilion` | `#b36b7d` | Reserved accent (dusty rose) |
+| `orange` | `#e39a68` | Apricot |
+| `mustard` | `#d8af83` | Warm sand |
+| `forest` | `#728e83` | Sage green |
+| `teal` | `#628eac` | Lake blue |
+| `sea` | `#456f9d` | Deeper blue |
+| `maroon` | `#82678f` | Muted mauve |
+| `pink` | `#d8a1aa` | Rose |
 
-Gouache — the same pigments in the UI and in the map:
-
-`vermilion #c7401f` · `orange #e57f32` · `mustard #e2b043` · `forest #2f6b4f` ·
-`teal #1f6b73` · `sea #1c4e8a` · `maroon #7a2230` · `pink #e9a593`
-
-The map uses three eight-colour sets that hand over as you travel: dark
-highland greens, maroon and ochre at the source (so the cream name reads);
-hot vermilion, orange, mustard and pink mid-course; teal, sky, mint and sand
-at the coast. Bands switch set one at a time along a wandering edge, so every
-stripe stays a pure pigment.
-
-The bare paper is the one place colour is allowed to drift. It is washed with
-a day that passes as you travel: peach at sunrise just below the source, clear
-paper through the middle, gold and then rose toward the coast. The wash is
-laid on unevenly, like watercolour, and the sheets on top of it stay cream.
-
-Vermilion is the only accent in text: footnote markers, live states,
-placeholders.
+The highlands remain dark enough to hold cream cut-out typography. Through
+the page, color gives way to generous unpainted reading space. Avoid
+turning every interface element into a saturated ornament.
 
 ## Type
 
 | Role | Face | Settings |
 | --- | --- | --- |
 | Display (`.display`) | **Bricolage Grotesque** 800 | `opsz 96`, `wdth 100`, −0.065em, leading 0.97 |
-| Statement (`.statement`) | Fraunces 400 | `SOFT 100`, `opsz 96`, −0.022em |
+| Statement (`.statement`) | Fraunces 400 | `SOFT 15`, `opsz 72`, −0.015em |
 | Text and annotations | Fraunces 400, roman and italic | Italic is the caption/aside voice |
 | Labels and figures (`.label`, `.figure`) | **DM Mono** | 11px, uppercase, +0.13em; tabular numerals |
 
@@ -106,24 +100,22 @@ Display type appears three ways:
 The display headings use bold Bricolage Grotesque as a more graphic, contemporary contrast to the hand-painted map. Body copy and statements keep Fraunces to retain the editorial warmth. The hero name is fitted to the measure in JS. Section titles (`CutTitle`)
 tumble into place letter by letter when they arrive.
 
-## Cut paper
+## Paper, not clutter
 
-`Paper` is the one container. It draws its sheet on a pseudo-element so the
-torn-edge filter (`#torn`, defined once in the layout) never touches the text,
-adds paper grain and a soft shadow, and takes a `tilt` in degrees — nothing in
-a collage sits square. Variants are only colour (`sheet`) and height off the
-table (`flat`).
+`Paper` remains a tactile sheet component with torn edges and grain, used
+deliberately around working figures, scrapbook content and footnotes.
+The hero still has one personal-note sheet; supporting metadata is quiet
+type directly on the map. The main navigation and project technology labels
+are plain text, not a stack of little colored scraps.
 
-- **Sheets** carry reading matter. Sections are several overlapping scraps
-  rather than one page: each project in Built is a coloured write-up note
-  overlapping its working figure, alternating sides down the river;
-  Read is a note of what's open beside a shelf standing on the page.
-- **Tags** carry nav, stack items, links. They lift and twist on hover.
-- **Spines** are the reading list: bands of colour, like the land outside.
-- **Ring discs** are the pursuits: tree rounds cut from paper, one irregular
-  ring after another, laid directly on the map with a caption scrap tucked
-  under each.
-- No cards, no rounded rectangles, no glass.
+The three featured projects are editorial case studies: their question,
+approach, takeaway and evidence are modeled in `src/content/site.ts`.
+Only **verified** screenshots and results belong in `evidenceImages`.
+The original interactive figures stay; they explain a project's mechanism,
+but they are not presented as authentic output from the associated apps.
+
+The reading shelf and tree rounds retain their tactile character. The rounds
+expand inline photograph scrapbooks rather than navigating to new pages.
 
 ## The map
 
@@ -147,12 +139,10 @@ Everything is computed per pixel in `RiverMap`; there is no image file.
    its place down the screen and steers by the channel beneath it: two come
    down each tributary, meet at the confluence, and follow every bend to the
    sea. The light goes from sunrise to sunset on the way.
-3. **Everything can be touched.** The pointer presses a soft dent into the
-   bands. Boats rock harder when it comes near. Loose scraps — the hero
-   notes, the open-books note, the ring discs — can be picked up with a mouse
-   and left wherever you drop them. Tags lift, spines rise and
-   their neighbours step back, ring discs turn, a paper plate trails the
-   cursor over the project index and swings with its direction.
+3. **Everything can be explored.** The pointer dents the bands; boats rock and
+   fan out into the sea. The interactive name responds to hover and tap.
+   Loose hero and reading sheets can be moved on desktop; tree rounds open
+   accessible inline photograph scrapbooks. Project demos are interactive.
 4. **Paper is put down, not faded in.** Sheets slide up and settle from a
    slightly crooked angle with a little overshoot. Small pieces rise in
    sequence. Nothing loops except the boats' gentle rocking and the interests ribbon,
@@ -169,8 +159,8 @@ Everything is computed per pixel in `RiverMap`; there is no image file.
 - `prefers-reduced-motion`: no paint-in, no entrances, no wing-flap or drift;
   the map renders still frames on scroll only; the sim starts paused; the
   ribbon becomes a scrollable row. Everything is visible without animation.
-- Body text always sits on paper, never on the map. Cut-out type is large
-  display only and carries a hard shadow for separation.
+- Reading copy sits in calm paper zones or on sheets; only short high-contrast
+  hero metadata sits on the painted map. Cut-out type is large display only.
 - Semantic landmarks, skip link, real buttons and links, visible focus rings,
   footnotes that link both ways. The map and boats are `aria-hidden`.
 - One WebGL context. Three.js loads after first paint; DPR is capped at 1.25
@@ -182,3 +172,15 @@ Everything is computed per pixel in `RiverMap`; there is no image file.
 All copy lives in `src/content/site.ts`. Anything marked `placeholder: true`
 (or a pursuit with no blurb) renders with a dashed vermilion **PLACEHOLDER**
 tag so it can't be mistaken for real content.
+
+## Exchange
+
+The illustrated editorial cover opens place chapters without leaving the page.
+Real photo essays can be added via `EXCHANGE_PLACES[].photos` and
+`EXCHANGE_PLACES[].notes`; unpublished posts remain empty. Never invent
+personal travel writing or substitute generated images for the user’s photos.
+
+## Favicon
+
+`src/app/icon.svg` is a small original watercolor-inspired **CD** monogram,
+using rose, lilac, apricot and blue over cream paper.
