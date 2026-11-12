@@ -84,7 +84,7 @@ body {
 
 /* Statement: large reading text, light and optical. */
 .statement {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-weight: 400;
   font-variation-settings: "SOFT" 15, "WONK" 0, "opsz" 72;
   letter-spacing: -0.015em;
