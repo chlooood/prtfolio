@@ -131,6 +131,9 @@ export function Hero() {
           ))}
         </button>
       </h1>
+      <p className="label mt-2 self-end text-cream drop-shadow-[0_1px_2px_#221a17]">
+        Hover the letters · tap to shuffle
+      </p>
 
       <div className="mt-auto flex flex-col gap-5 pb-[clamp(1.25rem,3vw,2.5rem)] pt-[30vh] md:flex-row md:items-end md:justify-between md:pt-10">
         <Paper
