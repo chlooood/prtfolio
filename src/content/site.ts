@@ -125,17 +125,20 @@ export const FINISHED: Book[] = [
 
 /* ───────────────────────────────────────────────────────────────────────────
  *  OFF THE CLOCK
- *  An entry with an empty blurb renders as a placeholder. `photos` is a list
- *  of paths under /public; null slots render as labelled empty frames.
+ *  Each pursuit is a title on a tree-ring disc. Two optional extras, both
+ *  hidden until you fill them in:
+ *    photos — paths under /public, e.g. ["/hiking/01.jpg", "/hiking/02.jpg"].
+ *             Up to three show as small prints under the title.
+ *    strava — the `src` URL from a Strava embed (Profile → Share → Embed),
+ *             e.g. "https://www.strava.com/athletes/<id>/latest-rides/<hash>".
  * ─────────────────────────────────────────────────────────────────────────── */
-export type Pursuit = { title: string; blurb: string; photos?: (string | null)[] };
+export type Pursuit = { title: string; photos?: string[]; strava?: string | null };
 
 export const PURSUITS: Pursuit[] = [
-  { title: "Soccer", blurb: "Winger, attacking side. Still play." },
-  { title: "Running", blurb: "Training for a faster 10k." },
-  { title: "Travel", blurb: "Lyon this summer." }, // TODO: "this summer" was 2026 — update when it dates
-  /* TODO: write the hiking line and drop photos into /public/hiking/. */
-  { title: "Hiking", blurb: "", photos: [null, null, null] },
+  { title: "Soccer", photos: [] }, // TODO: soccer photos → /public/soccer/
+  { title: "Running", strava: null }, // TODO: Strava embed URL
+  { title: "Travel", photos: [] }, // TODO: travel photos → /public/travel/
+  { title: "Hiking", photos: [] }, // TODO: hiking photos → /public/hiking/
 ];
 
 export const INTERESTS = [

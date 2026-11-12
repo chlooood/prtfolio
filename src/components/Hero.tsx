@@ -10,9 +10,9 @@ const WORDS = [PROFILE.firstName, PROFILE.lastName];
 const WORD_GAP_EM = 0.22;
 
 /**
- * The source. Two streams come down from the top corners — one named for each
- * half of the degree — and meet at the foot of this section. The name is cut
- * from cream paper and laid across the highlands like a masthead.
+ * The source. Two streams come down from the top corners and meet at the foot
+ * of this section. The name is cut from cream paper and laid across the
+ * highlands like a masthead.
  */
 export function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -93,20 +93,6 @@ export function Hero() {
         ))}
       </h1>
 
-      {/* The two streams, named. */}
-      <p
-        data-stream
-        className="cutout pointer-events-none absolute left-[30%] top-[40%] hidden origin-left rotate-[38deg] font-serif text-[clamp(1rem,1.5vw,1.375rem)] italic md:block"
-      >
-        Business
-      </p>
-      <p
-        data-stream
-        className="cutout pointer-events-none absolute right-[30%] top-[40%] hidden origin-right -rotate-[38deg] font-serif text-[clamp(1rem,1.5vw,1.375rem)] italic md:block"
-      >
-        Computer Science
-      </p>
-
       <div className="mt-auto flex flex-col gap-5 pb-[clamp(1.25rem,3vw,2.5rem)] pt-[38vh] md:flex-row md:items-end md:justify-between md:pt-10">
         <Paper
           tilt={-1.2}
@@ -125,7 +111,7 @@ export function Hero() {
         </Paper>
 
         <p data-stream className="cutout label pointer-events-none hidden self-center pb-2 text-center md:block">
-          The confluence
+          Downstream
           <br />↓
         </p>
 

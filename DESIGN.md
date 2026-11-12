@@ -5,11 +5,10 @@
 The whole site is one aerial map, painted in bands of gouache, with the
 content laid on top as cut paper — and a lot of clean paper left bare.
 
-Two streams rise at the top corners of the page — **Business** and **Computer
-Science** — and meet at a confluence at the foot of the hero. From there one
-river runs the length of the page to the sea at the bottom. Scrolling is
-travelling downstream. It is the headline ("…and no, that wasn't an accident")
-drawn as a picture: two things that were always going to be one.
+Two streams rise at the top corners of the page and meet at a confluence at
+the foot of the hero. From there one river runs the length of the page to the
+sea at the bottom. Scrolling is travelling downstream. The picture is left to
+speak for itself: nothing on the page labels or explains it.
 
 Taste references, used for feeling and never for layout: a 1949 *New Yorker*
 cover (a city seen from above in vermilion and green, birds crossing it),

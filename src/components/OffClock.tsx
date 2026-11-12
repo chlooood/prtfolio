@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger, MOTION_OK } from "@/lib/gsap";
 import { INTERESTS, PURSUITS } from "@/content/site";
-import { PlaceholderTag } from "./Cite";
 import { CutTitle } from "./CutTitle";
 import { Paper } from "./Paper";
 
@@ -143,34 +142,27 @@ export function OffClock() {
             <Paper
               flat
               tilt={i % 2 ? 2 : -2.5}
-              className="relative -mt-[18%] ml-[6%] w-[88%] px-4 py-3 sm:w-[78%] sm:px-5 sm:py-4"
+              className="relative -mt-[16%] ml-[6%] w-fit max-w-[88%] px-4 py-3 sm:px-5 sm:py-4"
             >
               <p className="label text-muted">{pad(i + 1)}</p>
               <h3 className="display mt-1 text-[clamp(1.5rem,2.6vw,2.5rem)]">{p.title}</h3>
-              {p.blurb ? (
-                <p className="mt-2 font-serif text-[clamp(1rem,1.3vw,1.25rem)] italic leading-snug text-ink-2">
-                  {p.blurb}
-                </p>
-              ) : (
-                <p className="mt-2">
-                  <PlaceholderTag>Placeholder — one line</PlaceholderTag>
-                </p>
-              )}
-              {p.photos && (
+              {p.photos && p.photos.length > 0 && (
                 <ul className="mt-3 grid grid-cols-3 gap-1.5">
-                  {p.photos.map((src, j) => (
-                    <li key={j} className="aspect-[3/4]">
-                      {src ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
-                      ) : (
-                        <span className="label flex h-full items-end border border-dashed border-vermilion p-1 text-[0.5rem] text-vermilion">
-                          Photo {pad(j + 1)}
-                        </span>
-                      )}
+                  {p.photos.slice(0, 3).map((src) => (
+                    <li key={src} className="aspect-[3/4] bg-paper-2">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={src} alt="" loading="lazy" className="h-full w-full object-cover" />
                     </li>
                   ))}
                 </ul>
+              )}
+              {p.strava && (
+                <iframe
+                  src={p.strava}
+                  title={`${p.title} on Strava`}
+                  loading="lazy"
+                  className="mt-3 h-[22rem] w-full border-0"
+                />
               )}
             </Paper>
           </li>
