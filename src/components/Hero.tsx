@@ -86,7 +86,7 @@ export function Hero() {
                 {ch}
               </span>
             ))}
-            <span data-probe className="invisible absolute left-0 top-0 whitespace-nowrap" style={{ fontSize: 100, letterSpacing: "-0.035em" }}>
+            <span data-probe className="invisible absolute left-0 top-0 whitespace-nowrap" style={{ fontSize: 100, letterSpacing: "-0.065em" }}>
               {word}
             </span>
           </span>
