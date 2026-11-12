@@ -34,7 +34,7 @@ export function Exchange() {
                 className={`group absolute z-10 -translate-x-1/2 -translate-y-1/2 touch-manipulation focus-visible:outline-cream ${selected === place.id ? "scale-110" : ""}`}
               >
                 <span className="flex items-center gap-1.5 bg-paper px-2.5 py-2 font-mono text-[clamp(.625rem,1.1vw,.75rem)] font-medium uppercase tracking-wider text-ink shadow-[3px_4px_0_#221a17] transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-[-2deg] sm:px-3">
-                  <span aria-hidden="true" className="text-vermilion">✳</span>{place.name}
+                  <span aria-hidden="true" style={{ color: place.accent }}>✳</span>{place.name}
                 </span>
               </button>
             ))}
@@ -44,16 +44,17 @@ export function Exchange() {
           </p>
         </div>
         <Paper id="exchange-place-panel" data-sheet tilt={1.2} className="relative min-w-0 overflow-hidden px-[clamp(1.25rem,3vw,2.75rem)] py-[clamp(1.5rem,3vw,3rem)]" aria-live="polite">
+          <div className="absolute right-[-3rem] top-[-3rem] -z-10 h-40 w-40 rounded-full opacity-20 transition-colors duration-500" style={{ backgroundColor: active?.accent ?? "var(--color-mustard)" }} aria-hidden="true" />
           <div className="flex items-center justify-between gap-3 border-b border-rule pb-4">
             <span className="label text-vermilion">The Exchange · Field notes</span>
-            <span className="label text-muted">{active ? "01 / Open chapter" : "Issue 001 / In progress"}</span>
+            <span className="label text-muted">{active ? active.motif : "Issue 001 / In progress"}</span>
           </div>
           <div aria-hidden="true" className="mt-7 flex items-center justify-between">
             <span className="label text-muted">Postcards, places, people</span>
             <span className="font-serif text-4xl italic text-vermilion">{active ? "✳" : "↗"}</span>
           </div>
-          <h3 className="statement mt-3 text-[clamp(2.6rem,4.5vw,4.5rem)]">{active?.name ?? "The world, in letters."}</h3>
-          <p className="mt-5 max-w-[36ch] text-lg leading-relaxed text-ink-2">
+          <h3 key={active?.id ?? "cover"} className="statement mt-3 text-[clamp(2.6rem,4.5vw,4.5rem)] motion-safe:animate-[exchange-unfold_.55s_cubic-bezier(.16,1,.3,1)_both]">{active?.name ?? "The world, in letters."}</h3>
+          <p key={active?.id ?? "intro"} className="mt-5 max-w-[36ch] text-lg leading-relaxed text-ink-2 motion-safe:animate-[exchange-unfold_.7s_cubic-bezier(.16,1,.3,1)_both]">
             {active?.description ?? "A place to collect the stories that don’t fit on a résumé: the places, people, ideas, and small discoveries worth writing home about."}
           </p>
           <div aria-hidden="true" className="my-9 flex gap-1.5 overflow-hidden">
