@@ -103,8 +103,7 @@ export function Nav() {
 
       <div
         id="menu"
-        hidden={!open}
-        className="fixed inset-0 z-[45] flex flex-col justify-between overflow-y-auto bg-forest px-[var(--pad)] pb-8 pt-[calc(var(--nav-h)+2rem)] text-cream md:hidden"
+        className={`fixed inset-0 z-[45] flex-col justify-between overflow-y-auto bg-forest px-[var(--pad)] pb-8 pt-[calc(var(--nav-h)+2rem)] text-cream md:hidden ${open ? "flex" : "hidden"}`}
       >
         <ul>
           {LINKS.map((l, i) => (
