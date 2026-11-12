@@ -1,74 +1,119 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap, FINE_POINTER } from "@/lib/gsap";
 import { PROJECTS, type Project } from "@/content/site";
 import { Cite, PlaceholderTag } from "./Cite";
 import { CutTitle } from "./CutTitle";
+import { NdtmFig } from "./NdtmFig";
 import { OddsSim } from "./OddsSim";
 import { Paper } from "./Paper";
+import { RunwayFig } from "./RunwayFig";
 
 const pad = (n: number) => String(n).padStart(2, "0");
-const SHEETS = ["var(--color-pink)", "var(--color-mustard)", "var(--color-forest)"];
 
-/** The image plate for a project — or a labelled empty scrap if none is set. */
-function Plate({ project, n }: { project: Project; n: number }) {
-  if (project.image) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={project.image} alt="" className="h-full w-full object-cover" />;
-  }
+const FIGURES = { odds: OddsSim, ndtm: NdtmFig, runway: RunwayFig } as const;
+
+/* Each project's write-up scrap takes a different sheet, so the three read
+   as three things rather than one long page. */
+const NOTE_SHEETS = ["var(--color-paper)", "var(--color-pink)", "var(--color-mustard)"];
+
+function Links({ project }: { project: Project }) {
+  if (!project.repo && !project.live) return null;
   return (
-    <Paper flat sheet={SHEETS[n % SHEETS.length]} className="flex h-full w-full flex-col justify-between p-5 text-ink">
-      <span className="label">Plate {pad(n)}</span>
-      <span className="display text-[6rem] text-ink/20">{pad(n)}</span>
-      <span className="label">Add an image → /public/work/{pad(n)}.jpg</span>
-    </Paper>
+    <p className="mt-8 flex flex-wrap gap-3">
+      {project.live && (
+        <Paper
+          as="a"
+          flat
+          tilt={1}
+          sheet="var(--color-vermilion)"
+          href={project.live}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="tag label text-cream"
+        >
+          Try the prototype <span aria-hidden="true">↗</span>
+        </Paper>
+      )}
+      {project.repo && (
+        <Paper
+          as="a"
+          flat
+          tilt={-1}
+          sheet="var(--color-ink)"
+          href={project.repo}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="tag label text-cream"
+        >
+          Read the source <span aria-hidden="true">↗</span>
+        </Paper>
+      )}
+    </p>
+  );
+}
+
+/** One project: a write-up scrap and a working figure, overlapping. */
+function Feature({ project, n }: { project: Project; n: number }) {
+  const Figure = project.figure ? FIGURES[project.figure] : null;
+  const flip = n % 2 === 0; // even-numbered projects put the figure on the left
+  return (
+    <article className="grid grid-cols-1 items-start gap-y-8 md:grid-cols-12">
+      <Paper
+        data-sheet
+        tilt={flip ? 1.2 : -1.4}
+        sheet={NOTE_SHEETS[(n - 1) % NOTE_SHEETS.length]}
+        className={`relative z-[2] px-[clamp(1.25rem,2.6vw,2.5rem)] py-[clamp(1.5rem,2.8vw,2.75rem)] md:col-span-5 ${
+          flip ? "md:order-2 md:mt-[7vw]" : ""
+        }`}
+      >
+        <p className="label flex gap-6 text-ink-2">
+          <span>No. {pad(n)}</span>
+          <span className={project.year === "In progress" ? "text-vermilion" : ""}>
+            {project.year === "In progress" ? "● " : ""}
+            {project.year}
+          </span>
+        </p>
+        <h3 className="statement mt-4 text-[clamp(2.25rem,4vw,3.75rem)] !leading-[0.98] text-balance">
+          {project.name}
+        </h3>
+        <p className="mt-6 text-[1.125rem] leading-[1.55] text-ink-2">{project.blurb}</p>
+        <ul className="mt-7 flex flex-wrap gap-2">
+          {project.stack.map((s, i) => (
+            <Paper as="li" key={s} flat tilt={i % 2 ? 1.5 : -1.5} sheet="var(--color-cream)" className="label px-3 py-1.5">
+              {s}
+            </Paper>
+          ))}
+        </ul>
+        <Links project={project} />
+      </Paper>
+
+      {Figure && (
+        <Paper
+          as="figure"
+          data-sheet
+          tilt={flip ? -0.9 : 1.1}
+          className={`relative z-[1] px-[clamp(1.25rem,2.6vw,2.5rem)] py-[clamp(1.5rem,2.8vw,2.75rem)] md:col-span-7 ${
+            flip ? "md:order-1 md:-mr-[3%]" : "md:-ml-[3%] md:mt-[9vw]"
+          }`}
+        >
+          <Figure />
+          <figcaption className="mt-5 font-serif text-[0.9375rem] italic leading-snug text-ink-2">
+            Fig. {n} — {project.caption}
+            <Cite n={3} />
+          </figcaption>
+        </Paper>
+      )}
+    </article>
   );
 }
 
 /**
- * The work, pinned to the map as three overlapping scraps rather than one
- * page: the write-up, the working figure, and the index of what's next.
+ * The work, pinned along the river: each project is a write-up scrap and a
+ * figure you can operate, alternating sides as you go downstream.
  */
 export function Built() {
-  const [feature, ...rest] = PROJECTS;
-  const listRef = useRef<HTMLOListElement>(null);
-  const plateRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState<number | null>(null);
-
-  // On fine pointers a paper plate trails the cursor over the index, swinging
-  // with the direction of travel.
-  useEffect(() => {
-    const list = listRef.current;
-    const plate = plateRef.current;
-    if (!list || !plate) return;
-    const mm = gsap.matchMedia();
-    mm.add(FINE_POINTER, () => {
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const d = reduce ? 0 : 0.5;
-      const x = gsap.quickTo(plate, "x", { duration: d, ease: "power3" });
-      const y = gsap.quickTo(plate, "y", { duration: d, ease: "power3" });
-      const rot = gsap.quickTo(plate, "rotation", { duration: reduce ? 0 : 0.8, ease: "power3" });
-      let lastX = 0;
-      const move = (e: PointerEvent) => {
-        x(e.clientX);
-        y(e.clientY);
-        if (!reduce) rot(gsap.utils.clamp(-10, 10, (e.clientX - lastX) * 0.45));
-        lastX = e.clientX;
-      };
-      const leave = () => {
-        setActive(null);
-        rot(0);
-      };
-      list.addEventListener("pointermove", move);
-      list.addEventListener("pointerleave", leave);
-      return () => {
-        list.removeEventListener("pointermove", move);
-        list.removeEventListener("pointerleave", leave);
-      };
-    });
-    return () => mm.revert();
-  }, []);
+  const features = PROJECTS.filter((p) => p.figure);
+  const rest = PROJECTS.filter((p) => !p.figure);
 
   return (
     <section id="built" className="px-[var(--pad)] pt-[clamp(10rem,40vh,24rem)]">
@@ -77,68 +122,11 @@ export function Built() {
         label={`Mile 01 · ${pad(PROJECTS.filter((p) => !p.placeholder).length)} on the water`}
       />
 
-      {feature && (
-        <article className="mt-[clamp(1.5rem,4vw,3.5rem)] grid grid-cols-1 items-start gap-y-8 md:grid-cols-12">
-          <Paper
-            data-sheet
-            tilt={-1.4}
-            className="relative z-[2] px-[clamp(1.25rem,2.6vw,2.5rem)] py-[clamp(1.5rem,2.8vw,2.75rem)] md:col-span-5"
-          >
-            <p className="label flex gap-6 text-muted">
-              <span>No. 01</span>
-              <span className="text-vermilion">● {feature.year}</span>
-            </p>
-            <h3 className="statement mt-4 text-[clamp(2.25rem,4vw,3.75rem)] !leading-[0.98] text-balance">
-              {feature.name}
-            </h3>
-            <p className="mt-6 text-[1.125rem] leading-[1.55] text-ink-2">{feature.blurb}</p>
-            <ul className="mt-7 flex flex-wrap gap-2">
-              {feature.stack.map((s, i) => (
-                <Paper
-                  as="li"
-                  key={s}
-                  flat
-                  tilt={i % 2 ? 1.5 : -1.5}
-                  sheet="var(--color-paper-2)"
-                  className="label px-3 py-1.5"
-                >
-                  {s}
-                </Paper>
-              ))}
-            </ul>
-            {feature.repo && (
-              <p className="mt-8">
-                <Paper
-                  as="a"
-                  flat
-                  tilt={-1}
-                  sheet="var(--color-ink)"
-                  href={feature.repo}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="tag label text-cream"
-                >
-                  Read the source <span aria-hidden="true">↗</span>
-                </Paper>
-              </p>
-            )}
-          </Paper>
-
-          <Paper
-            as="figure"
-            data-sheet
-            tilt={1.1}
-            className="relative z-[1] px-[clamp(1.25rem,2.6vw,2.5rem)] py-[clamp(1.5rem,2.8vw,2.75rem)] md:col-span-7 md:-ml-[3%] md:mt-[9vw]"
-          >
-            <OddsSim />
-            <figcaption className="mt-5 font-serif text-[0.9375rem] italic leading-snug text-ink-2">
-              Fig. 1 — The premise, small enough to play with. Turn up the latency and watch the
-              market start contradicting itself.
-              <Cite n={3} />
-            </figcaption>
-          </Paper>
-        </article>
-      )}
+      <div className="mt-[clamp(1.5rem,4vw,3.5rem)] space-y-[clamp(6rem,22vh,14rem)]">
+        {features.map((p, i) => (
+          <Feature key={p.name} project={p} n={i + 1} />
+        ))}
+      </div>
 
       {rest.length > 0 && (
         <Paper
@@ -147,22 +135,21 @@ export function Built() {
           className="mt-[clamp(3rem,9vw,8rem)] px-[clamp(1.25rem,2.6vw,2.5rem)] py-[clamp(1.5rem,2.8vw,2.5rem)] md:ml-[12%] md:w-[80%]"
         >
           <p className="label mb-3 text-muted">Further downstream</p>
-          <ol ref={listRef} className="border-t-2 border-ink">
+          <ol className="border-t-2 border-ink">
             {rest.map((p, i) => {
-              const n = i + 2;
+              const n = features.length + i + 1;
               const href = p.live ?? p.repo;
               const Row = href ? "a" : "div";
               return (
                 <li key={n} className="border-b border-rule last:border-b-0">
                   <Row
                     {...(href ? { href, target: "_blank", rel: "noreferrer noopener" } : {})}
-                    onPointerEnter={() => setActive(i)}
                     className="group grid grid-cols-4 items-baseline gap-x-4 gap-y-2 py-5 md:grid-cols-12 md:gap-x-8"
                   >
                     <span className="label col-span-1 text-muted">{pad(n)}</span>
                     <span className="col-span-3 flex flex-wrap items-center gap-x-4 gap-y-2 md:col-span-6">
                       <span
-                        className={`statement text-[clamp(1.5rem,3vw,2.75rem)] transition-[font-variation-settings,translate] duration-500 ease-[var(--ease-expo)] group-hover:translate-x-2 group-hover:[font-variation-settings:'SOFT'_100,'WONK'_1,'opsz'_96] ${p.placeholder ? "text-ink/40" : ""}`}
+                        className={`statement text-[clamp(1.5rem,3vw,2.75rem)] transition-[translate] duration-500 ease-[var(--ease-expo)] group-hover:translate-x-2 ${p.placeholder ? "text-ink/40" : ""}`}
                       >
                         {p.name}
                       </span>
@@ -180,30 +167,6 @@ export function Built() {
               );
             })}
           </ol>
-          {rest.some((p) => p.placeholder) && (
-            <p className="label mt-4 text-vermilion">Placeholder rows — edit PROJECTS in src/content/site.ts</p>
-          )}
-
-          <div
-            ref={plateRef}
-            aria-hidden="true"
-            className="pointer-events-none fixed left-0 top-0 z-30 hidden [@media(hover:hover)_and_(pointer:fine)]:block"
-          >
-            <div
-              className="relative h-[19rem] w-[15rem] -translate-y-1/2 translate-x-8 transition-[scale,opacity] duration-500 ease-[var(--ease-spring)]"
-              style={{ scale: active === null ? "0.6" : "1", opacity: active === null ? 0 : 1 }}
-            >
-              {rest.map((p, i) => (
-                <div
-                  key={i}
-                  className="absolute inset-0 transition-opacity duration-300"
-                  style={{ opacity: active === i ? 1 : 0 }}
-                >
-                  <Plate project={p} n={i + 2} />
-                </div>
-              ))}
-            </div>
-          </div>
         </Paper>
       )}
     </section>

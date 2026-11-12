@@ -13,7 +13,9 @@ Everything the site says is in [`src/content/site.ts`](src/content/site.ts).
 Search it for `TODO` to find what's still waiting on real content; placeholder
 entries show on the page with a red **PLACEHOLDER** tag until replaced.
 
-- Project images: drop files in `public/work/` and set `image` on the project.
+- Projects: add an entry to `PROJECTS`. Give it a `figure` to pair it with an
+  interactive demo (`OddsSim`, `NdtmFig`, `RunwayFig` are the existing ones);
+  without one it is listed in a plain index under the others.
 - Hiking photos: drop files in `public/hiking/` and list them in `photos`.
 
 ## Structure
@@ -21,7 +23,8 @@ entries show on the page with a red **PLACEHOLDER** tag until replaced.
 ```
 src/app            layout, page, global styles and tokens
 src/components     one file per section, plus RiverMap (the painted map),
-                   Birds, Paper (cut-paper scraps), OddsSim (Fig. 1),
+                   Birds, Paper (cut-paper scraps), the project figures
+                   (OddsSim, NdtmFig, RunwayFig), CutTitle,
                    MotionRoot (scroll behaviour)
 src/lib/river.ts   the river's course, shared by the map and the birds
 src/content        site.ts — all copy

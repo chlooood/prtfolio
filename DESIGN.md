@@ -107,7 +107,8 @@ a collage sits square. Variants are only colour (`sheet`) and height off the
 table (`flat`).
 
 - **Sheets** carry reading matter. Sections are several overlapping scraps
-  rather than one page: Built is a write-up, a working figure and an index;
+  rather than one page: each project in Built is a coloured write-up note
+  overlapping its working figure, alternating sides down the river;
   Read is a note of what's open beside a shelf standing on the page.
 - **Tags** carry nav, stack items, links. They lift and twist on hover.
 - **Spines** are the reading list: bands of colour, like the land outside.
@@ -146,8 +147,12 @@ Everything is computed per pixel in `RiverMap`; there is no image file.
    slightly crooked angle with a little overshoot. Small pieces rise in
    sequence. Nothing loops except the birds' wings and the interests ribbon,
    which leans on scroll speed and settles.
-5. **Interaction should explain something.** Fig. 1 lets you turn latency and
-   noise and watch arbitrage appear; footnotes open in place.
+5. **Interaction should explain something.** Every project gets a figure you
+   can operate, built from that project's own rules on made-up numbers:
+   Fig. 1 (`OddsSim`) turns latency and noise until arbitrage appears; Fig. 2
+   (`NdtmFig`) changes the trip and watches the plan and packing list rewrite
+   themselves; Fig. 3 (`RunwayFig`) bends a savings forecast with a city
+   toggle and two dials. Footnotes open in place.
 
 ## Accessibility and performance
 

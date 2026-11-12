@@ -41,7 +41,8 @@ export const CONTACT = {
 };
 
 /* ───────────────────────────────────────────────────────────────────────────
- *  BUILT — projects. The first entry is the feature (it gets the live figure).
+ *  BUILT — projects, in the order they appear. Each one with a `figure` gets
+ *  a write-up and a working demo side by side.
  * ─────────────────────────────────────────────────────────────────────────── */
 export type Project = {
   name: string;
@@ -52,6 +53,11 @@ export type Project = {
   live: string | null;
   /* Path under /public for the hover plate, e.g. "/work/02.jpg". */
   image: string | null;
+  /* Which interactive figure sits beside the write-up (see components/*Fig
+     and OddsSim). Projects without one go in the plain index underneath. */
+  figure?: "odds" | "ndtm" | "runway";
+  /* The italic caption under the figure. */
+  caption?: string;
   placeholder?: boolean;
 };
 
@@ -65,27 +71,35 @@ export const PROJECTS: Project[] = [
     repo: "https://github.com/chlooood/odds-engine",
     live: null,
     image: null,
-  },
-  /* TODO: replace these two with real projects, or delete them. */
-  {
-    name: "Project title goes here",
-    year: "Year",
-    blurb: "One or two sentences: what it does, and what was hard about it.",
-    stack: ["Stack", "Stack", "Stack"],
-    repo: null,
-    live: null,
-    image: null,
-    placeholder: true,
+    figure: "odds",
+    caption:
+      "The premise, small enough to play with. Turn up the latency and watch the market start contradicting itself.",
   },
   {
-    name: "Project title goes here",
-    year: "Year",
-    blurb: "One or two sentences: what it does, and what was hard about it.",
-    stack: ["Stack", "Stack", "Stack"],
-    repo: null,
+    name: "ndtm — Not Doing Too Much",
+    year: "2026",
+    blurb:
+      "A scrapbook-style trip planner for exchange students. Screenshot a Reel, a TikTok or a trail page and get a destination with trains or driving already worked out, then share the itinerary with friends. The vision model is only trusted for what it can see — which place, city or alpine. Routes, booking links and packing lists come from plain rules on the device, shaped by your profile, so it can’t invent a hostel, a fare or a gear item.",
+    stack: ["Expo", "React Native", "TypeScript", "Supabase", "Claude API", "NativeWind"],
+    repo: "https://github.com/chlooood/ndtm-app",
+    live: "https://chlooood.github.io/ndtm-app/",
+    image: null,
+    figure: "ndtm",
+    caption:
+      "The tailoring rules on their own. Change the trip and the plan rewrites itself; tick what you own and it comes off the list.",
+  },
+  {
+    name: "Runway",
+    year: "2026",
+    blurb:
+      "A friendly little forecaster for a question I kept asking myself: will I have saved enough for my exchange, and will it last? No machine learning, just rules you can follow. When you can flip between cities and watch your balance line bend, you end up exploring your money instead of avoiding it.",
+    stack: ["FastAPI", "SQLAlchemy", "PostgreSQL", "React", "TypeScript", "Recharts", "pytest"],
+    repo: "https://github.com/chlooood/runway-app",
     live: null,
     image: null,
-    placeholder: true,
+    figure: "runway",
+    caption:
+      "The forecast rule on made-up numbers. Push the budget away up until the line goes red, then trim until it doesn’t.",
   },
 ];
 
@@ -142,5 +156,5 @@ export const INTERESTS = [
 export const CITATIONS = [
   "Citations available on request.",
   "The combined major in Business and Computer Science at UBC — BUCS, to the people in it. Class of 2029.",
-  "Illustrative only. The figure is a small seeded simulation running in your browser, written for this page; it is not output from the engine.",
+  "Illustrative only. The figures are small models written for this page, running in your browser on made-up numbers. They follow each project’s rules but are not output from the projects themselves.",
 ];
