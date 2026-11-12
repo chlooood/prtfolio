@@ -109,12 +109,15 @@ export const PROJECTS: Project[] = [
 export type Book = { title: string; author: string };
 
 export const READING: Book[] = [
-  { title: "Kitchen Confidential", author: "Anthony Bourdain" },
-  { title: "Careless People", author: "Sarah Wynn-Williams" },
+  { title: "The Bee Sting", author: "Paul Murray" },
+  { title: "Algorithms to Live By", author: "Brian Christian and Tom Griffiths" },
 ];
 
 export const FINISHED_YEAR = "2026";
 export const FINISHED: Book[] = [
+  { title: "Funny Story", author: "Emily Henry" },
+  { title: "Careless People", author: "Sarah Wynn-Williams" },
+  { title: "Kitchen Confidential", author: "Anthony Bourdain" },
   { title: "Sunrise on the Reaping", author: "Suzanne Collins" },
   { title: "Bright Young Women", author: "Jessica Knoll" },
   { title: "Berlin", author: "Bea Setton" },
