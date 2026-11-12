@@ -63,7 +63,7 @@ export function Nav() {
   return (
     <>
       <header
-        className={`pointer-events-none fixed inset-x-0 top-0 z-50 transition-transform duration-700 ease-[var(--ease-expo)] focus-within:translate-y-0 ${
+        className={`pointer-events-none fixed inset-x-0 top-0 z-50 border-b border-ink/10 bg-paper/90 backdrop-blur-md transition-transform duration-700 ease-[var(--ease-expo)] focus-within:translate-y-0 ${
           tucked && !open ? "-translate-y-[120%]" : ""
         }`}
       >
