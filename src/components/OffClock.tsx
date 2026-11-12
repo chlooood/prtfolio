@@ -123,7 +123,7 @@ export function OffClock() {
     <section id="off-the-clock" className="pt-[clamp(10rem,42vh,26rem)]">
       <CutTitle
         lines={["Off the", "clock"]}
-        label={`Mile 03 · ${pad(PURSUITS.length)} pursuits`}
+        label={`Mile 04 · ${pad(PURSUITS.length)} pursuits`}
         className="px-[var(--pad)]"
       />
 
