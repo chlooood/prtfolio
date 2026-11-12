@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { gsap, MOTION_OK } from "@/lib/gsap";
-import { Paper } from "./Paper";
 
 /**
  * A section title set straight on the page — in ink on clean paper, or cut
@@ -45,9 +44,7 @@ export function CutTitle({
         (cut ? (
           <p className="cutout label">{label}</p>
         ) : (
-          <Paper as="p" flat tilt={-1.5} className="label inline-block px-3 py-1.5 text-ink-2">
-            {label}
-          </Paper>
+          <p className="font-mono text-xs tracking-[.04em] text-muted">{label}</p>
         ))}
       <h2
         aria-label={lines.join(" ")}
