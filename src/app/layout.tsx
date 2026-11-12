@@ -1,20 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, DM_Mono, Newsreader } from "next/font/google";
+import { DM_Mono, Fraunces } from "next/font/google";
 import { PROFILE } from "@/content/site";
 import "./globals.css";
 
-const archivo = Archivo({
-  subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
-  display: "swap",
-});
-
-const newsreader = Newsreader({
+const fraunces = Fraunces({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
-  variable: "--font-newsreader",
+  axes: ["SOFT", "WONK", "opsz"],
+  variable: "--font-fraunces",
   display: "swap",
 });
 
@@ -38,16 +31,25 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f2eee3",
+  themeColor: "#2e5e46",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${archivo.variable} ${newsreader.variable} ${dmMono.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${dmMono.variable}`}>
       <body>
+        {/* The torn-edge filter every paper scrap shares. */}
+        <svg aria-hidden="true" width="0" height="0" className="absolute">
+          <defs>
+            <filter id="torn" x="-5%" y="-5%" width="110%" height="110%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n" />
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </defs>
+        </svg>
         <a
           href="#main"
-          className="label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-ink focus:px-4 focus:py-3 focus:text-paper"
+          className="label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-ink focus:px-4 focus:py-3 focus:text-cream"
         >
           Skip to content
         </a>

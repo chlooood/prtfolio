@@ -1,32 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f2eee3;
-  --color-paper-2: #e8e2d2;
-  --color-ink: #191c12;
-  --color-ink-2: #45483a;
-  --color-muted: #5f6150;
-  --color-pen: #c4320f;
-  --color-pen-soft: #e9a48f;
-  --color-rule: rgb(25 28 18 / 0.16);
+  /* Paper and ink */
+  --color-paper: #f4ecdb;
+  --color-paper-2: #e9ddc3;
+  --color-ink: #221a17;
+  --color-ink-2: #4d4038;
+  --color-muted: #6b5d50;
+  --color-rule: rgb(34 26 23 / 0.18);
 
-  --font-display: var(--font-archivo), "Arial Black", "Helvetica Neue", sans-serif;
-  --font-serif: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
+  /* Gouache — the same pigments the map is painted with */
+  --color-vermilion: #c7401f;
+  --color-orange: #e57f32;
+  --color-mustard: #e2b043;
+  --color-forest: #2f6b4f;
+  --color-teal: #1f6b73;
+  --color-sea: #1c4e8a;
+  --color-maroon: #7a2230;
+  --color-pink: #e9a593;
+  --color-cream: #f7eed8;
+
+  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-serif: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --font-mono: var(--font-dm-mono), ui-monospace, "SFMono-Regular", monospace;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 :root {
-  --pad: clamp(1.25rem, 3.4vw, 3.25rem);
-  --nav-h: 3.5rem;
+  --pad: clamp(1rem, 3.4vw, 3.25rem);
+  --nav-h: 4rem;
   color-scheme: light;
 }
 
 html {
   background: var(--color-paper);
   -webkit-text-size-adjust: 100%;
-  scroll-padding-top: var(--nav-h);
+  scroll-padding-top: calc(var(--nav-h) + 1rem);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -41,6 +52,7 @@ body {
   font-family: var(--font-serif);
   font-size: 1.0625rem;
   line-height: 1.5;
+  font-variation-settings: "SOFT" 50, "WONK" 0;
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -48,73 +60,107 @@ body {
 }
 
 ::selection {
-  background: var(--color-pen);
-  color: var(--color-paper);
+  background: var(--color-vermilion);
+  color: var(--color-cream);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-pen);
+  outline: 2px solid var(--color-vermilion);
   outline-offset: 3px;
-  border-radius: 1px;
 }
 
+@layer components {
 /* ── Type roles ──────────────────────────────────────────────────────────── */
 
-/* Display: Archivo on its width axis. --wdth is the one variable the whole
-   site animates; scroll position drives it. */
+/* Display: Fraunces at its heaviest, softest and most eccentric. */
 .display {
   font-family: var(--font-display);
-  font-variation-settings: "wdth" var(--wdth, 125), "wght" var(--wght, 800);
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  line-height: 0.86;
+  font-weight: 900;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  letter-spacing: -0.035em;
+  line-height: 0.88;
+}
+
+/* Statement: large reading text, light and optical. */
+.statement {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-variation-settings: "SOFT" 100, "WONK" 0, "opsz" 96;
+  letter-spacing: -0.022em;
+  line-height: 1.06;
 }
 
 .label {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   line-height: 1.4;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
+  font-variation-settings: normal;
 }
 
 .figure {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
+  font-variation-settings: normal;
 }
 
-/* ── The margin rule (ruled-paper red line, doubles as scroll progress) ──── */
-.margin-rule {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: calc(var(--pad) / 2);
-  width: 1px;
-  z-index: 40;
-  pointer-events: none;
-  background: rgb(196 50 15 / 0.22);
+/* ── Cut paper ───────────────────────────────────────────────────────────── */
+
+/* A scrap of paper laid on the map. The ::before carries the sheet (so the
+   torn-edge filter never touches the text); the shadow lifts it off the land. */
+.paper {
+  position: relative;
+  isolation: isolate;
 }
-.margin-rule > i {
+.paper::before {
+  content: "";
   position: absolute;
   inset: 0;
-  background: var(--color-pen);
-  transform: scaleY(0);
-  transform-origin: top;
+  z-index: -1;
+  background-color: var(--sheet, var(--color-paper));
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .14 0 0 0 0 .1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  filter: url(#torn) drop-shadow(0 1px 0 rgb(34 26 23 / 0.25)) drop-shadow(0 18px 26px rgb(34 20 12 / 0.3));
+}
+.paper-flat::before {
+  filter: url(#torn) drop-shadow(0 1px 0 rgb(34 26 23 / 0.25)) drop-shadow(0 6px 10px rgb(34 20 12 / 0.28));
 }
 
-/* ── Placeholder tag ─────────────────────────────────────────────────────── */
-.ph-tag {
+/* Tags: small scraps used for nav, labels and links. They lift when touched. */
+.tag {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
+  padding: 0.6em 0.9em;
+  transition: transform 0.5s var(--ease-spring);
+}
+a.tag:hover,
+button.tag:hover {
+  transform: translateY(-3px) rotate(-2deg);
+}
+a.tag:active,
+button.tag:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Type cut from paper and laid on the map. */
+.cutout {
+  color: var(--color-cream);
+  filter: drop-shadow(0 0.035em 0 rgb(34 20 12 / 0.55)) drop-shadow(0 0.1em 0.12em rgb(34 20 12 / 0.3));
+}
+
+.ph-tag {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-mono);
   font-size: 0.625rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--color-pen);
-  border: 1px dashed var(--color-pen);
+  color: var(--color-vermilion);
+  border: 1px dashed var(--color-vermilion);
   padding: 0.3em 0.6em;
   max-width: 100%;
+  font-variation-settings: normal;
 }
 
 /* ── Links ───────────────────────────────────────────────────────────────── */
@@ -122,11 +168,10 @@ body {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
-  text-decoration-color: currentColor;
-  transition: color 0.25s, text-decoration-color 0.25s;
+  transition: color 0.25s;
 }
 .link:hover {
-  color: var(--color-pen);
+  color: var(--color-vermilion);
 }
 
 /* ── Footnote markers ────────────────────────────────────────────────────── */
@@ -140,14 +185,12 @@ body {
   letter-spacing: 0;
   line-height: 1;
   vertical-align: super;
-  text-transform: none;
   font-variation-settings: normal;
 }
 .cite > a {
-  color: var(--color-pen);
+  color: var(--color-vermilion);
   padding: 0.35em 0.3em;
   margin: -0.35em 0;
-  text-decoration: none;
 }
 .cite > a:hover {
   text-decoration: underline;
@@ -165,21 +208,19 @@ body {
     width: 17rem;
     padding: 0.75rem 0.875rem;
     background: var(--color-ink);
-    color: var(--color-paper);
+    color: var(--color-cream);
     font-family: var(--font-serif);
     font-style: italic;
     font-size: 0.9375rem;
     font-weight: 400;
     line-height: 1.35;
     letter-spacing: 0;
-    text-transform: none;
-    white-space: normal;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-4px);
+    transform: translateY(-4px) rotate(-1deg);
     transition:
       opacity 0.2s,
-      transform 0.3s var(--ease-expo),
+      transform 0.4s var(--ease-spring),
       visibility 0.2s;
     pointer-events: none;
   }
@@ -187,60 +228,32 @@ body {
   .cite:focus-within .cite-tip {
     opacity: 1;
     visibility: visible;
-    transform: none;
+    transform: rotate(-1deg);
   }
 }
 
-/* ── Loader ──────────────────────────────────────────────────────────────── */
-.loader {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background: var(--color-paper);
-  /* If JS never runs, get out of the way on our own. */
-  animation: loader-out 0.01s linear 3.5s forwards;
-}
-@keyframes loader-out {
-  to {
-    visibility: hidden;
-    opacity: 0;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .loader {
-    display: none;
-  }
-}
-
-/* ── Accordion rows (Worked) ─────────────────────────────────────────────── */
-.fold {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.6s var(--ease-expo);
-}
-.fold[data-open="true"] {
-  grid-template-rows: 1fr;
-}
-.fold > div {
-  overflow: hidden;
-  min-height: 0;
-}
-
-.stretch {
-  transition: font-variation-settings 0.6s var(--ease-expo);
-}
-
-/* ── Bookshelf dimming ───────────────────────────────────────────────────── */
+/* ── Bookshelf ───────────────────────────────────────────────────────────── */
 @media (hover: hover) {
   .shelf:hover .book {
-    opacity: 0.22;
+    opacity: 0.45;
   }
   .shelf .book:hover {
     opacity: 1;
   }
 }
 .book {
-  transition: opacity 0.35s;
+  transition:
+    opacity 0.35s,
+    transform 0.6s var(--ease-spring);
+}
+
+/* ── Ring discs ──────────────────────────────────────────────────────────── */
+.disc svg {
+  transition: transform 1.6s var(--ease-expo);
+}
+.disc:hover svg,
+.disc:focus-within svg {
+  transform: rotate(48deg) scale(1.04);
 }
 
 /* ── Range inputs (figure controls) ──────────────────────────────────────── */
@@ -248,33 +261,39 @@ input[type="range"].dial {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 1.5rem;
+  height: 1.75rem;
   background: transparent;
   cursor: ew-resize;
 }
 input[type="range"].dial::-webkit-slider-runnable-track {
-  height: 1px;
+  height: 2px;
   background: var(--color-ink);
 }
 input[type="range"].dial::-moz-range-track {
-  height: 1px;
+  height: 2px;
   background: var(--color-ink);
 }
 input[type="range"].dial::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 0.875rem;
-  height: 0.875rem;
-  margin-top: calc(-0.4375rem + 0.5px);
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: calc(-0.5625rem + 1px);
   border-radius: 50%;
-  background: var(--color-pen);
-  border: 0;
+  background: var(--color-vermilion);
+  border: 2px solid var(--color-ink);
+  transition: transform 0.3s var(--ease-spring);
+}
+input[type="range"].dial::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
 }
 input[type="range"].dial::-moz-range-thumb {
   width: 0.875rem;
   height: 0.875rem;
   border-radius: 50%;
-  background: var(--color-pen);
-  border: 0;
+  background: var(--color-vermilion);
+  border: 2px solid var(--color-ink);
+}
+
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -20,13 +20,15 @@ entries show on the page with a red **PLACEHOLDER** tag until replaced.
 
 ```
 src/app            layout, page, global styles and tokens
-src/components     one file per section, plus Landscape (the painting),
-                   OddsSim (Fig. 1), Swatch, MotionRoot (scroll behaviour)
+src/components     one file per section, plus RiverMap (the painted map),
+                   Birds, Paper (cut-paper scraps), OddsSim (Fig. 1),
+                   MotionRoot (scroll behaviour)
+src/lib/river.ts   the river's course, shared by the map and the birds
 src/content        site.ts — all copy
 ```
 
 The visual system and interaction principles are documented in
 [`DESIGN.md`](DESIGN.md).
 
-The previous Vite version of this site is kept on the local branch
-`archive/vite-v1`.
+Earlier versions are kept on local branches: `design/watercolour` (the
+watercolour-landscape direction) and `archive/vite-v1` (the original Vite site).

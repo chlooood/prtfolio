@@ -1,97 +1,144 @@
 # Design
 
-## Concept — *Keeping score*
+## Concept — *Downstream*
 
-The site is a ledger kept in a sketchbook. The ledger comes from the copy
-("I keep score here — what I built, what I read, what I got wrong") and gives
-the page its structure: numbered sections, ruled lines, tallies, footnotes, an
-errata column. The sketchbook gives it its pictures: one watercolour view,
-painted in code, that opens the page by day and closes it by night.
+The whole site is one aerial map, painted in bands of gouache, with the
+content laid on top as cut paper.
 
-Two registers, deliberately: **rigorous type on rules** and **loose paint on
-paper**. Neither decorates the other.
+Two streams rise at the top corners of the page — **Business** and **Computer
+Science** — and meet at a confluence at the foot of the hero. From there one
+river runs the length of the page to the sea at the bottom. Scrolling is
+travelling downstream. It is the headline ("…and no, that wasn't an accident")
+drawn as a picture: two things that were always going to be one.
 
-References studied for taste, not layout: dwell.au (paper, serif numerals, a
-drawing that washes into colour), meesverberne.com (one enormous wordmark, one
-illustration with presence), maximilianberndt.com/archive (strict small Swiss
-type, numbered index).
+Taste references, used for feeling and never for layout: a 1949 *New Yorker*
+cover (a city seen from above in vermilion and green, birds crossing it),
+cut-paper collage, tree-ring prints, banded gouache, an embroidered river.
+What they share is what this site is built from: **the view from above, flat
+saturated colour in bands, and things cut out and laid down by hand.**
+
+### What it replaced, and why
+
+The previous direction was a typographic ledger (hairlines, mono labels, one
+red) with a watercolour landscape added to it. It was tidy but generic: the
+picture decorated the layout instead of being the layout, the palette was
+timid, and nothing about it was recognisable at thumbnail size. That version
+is kept on the `design/watercolour` branch.
+
+## Layers
+
+Back to front:
+
+1. **The map** (`RiverMap`) — a fixed full-viewport fragment shader that
+   scrolls with the page.
+2. **The birds** (`Birds`) — a flock of seven, seen from above.
+3. **The paper** — every piece of content: sheets, tags, spines, ring discs,
+   cut-out type.
+4. **The nav** — a handful of paper tags pinned along the top.
+
+Birds fly between the map and the paper, so they never cross text.
 
 ## Colour
 
+Paper and ink:
+
 | Token | Value | Use |
 | --- | --- | --- |
-| `paper` | `#f2eee3` | Ground |
-| `paper-2` | `#e8e2d2` | Plates, tints |
-| `ink` | `#191c12` | Text, rules, the closing section's ground |
-| `ink-2` | `#45483a` | Secondary text |
-| `muted` | `#5f6150` | Labels (AA on paper) |
-| `pen` | `#c4320f` | The red pen: footnote markers, margin rule, live states, placeholders, the sun |
-| `pen-soft` | `#e9a48f` | Pen on ink |
+| `paper` | `#f4ecdb` | Sheets |
+| `paper-2` | `#e9ddc3` | Small tags |
+| `cream` | `#f7eed8` | Cut-out type on the map, birds |
+| `ink` | `#221a17` | Text |
+| `ink-2` / `muted` | `#4d4038` / `#6b5d50` | Secondary text, labels (AA on paper) |
 
-Paint lives only in the painting and the swatches: cerulean and blue-grey
-ridges, sap green treeline, burnt sienna, ochre. UI never borrows those
-colours; paint never uses `pen` except for the sun.
+Gouache — the same pigments in the UI and in the map:
+
+`vermilion #c7401f` · `orange #e57f32` · `mustard #e2b043` · `forest #2f6b4f` ·
+`teal #1f6b73` · `sea #1c4e8a` · `maroon #7a2230` · `pink #e9a593`
+
+The map uses three eight-colour sets that hand over as you travel: dark
+highland greens, maroon and ochre at the source (so the cream name reads);
+hot vermilion, orange, mustard and pink mid-course; teal, sky, mint and sand
+at the coast. Bands switch set one at a time along a wandering edge, so every
+stripe stays a pure pigment. No gradients anywhere.
+
+Vermilion is the only accent in text: footnote markers, live states,
+placeholders.
 
 ## Type
 
-| Role | Face | Notes |
+| Role | Face | Settings |
 | --- | --- | --- |
-| Display | **Archivo** (variable, width 62–125, weight 800) | Uppercase, −0.02em, leading 0.86. Class `.display`. |
-| Text & statements | **Newsreader** (optical size, roman + italic) | Italic is the "annotation" voice: captions, roles, notes. |
-| Labels & figures | **DM Mono** | 11px, uppercase, +0.14em (`.label`); tabular numerals (`.figure`). |
+| Display (`.display`) | **Fraunces** 900 | `SOFT 100`, `WONK 1`, `opsz 144`, −0.035em, leading 0.88 |
+| Statement (`.statement`) | Fraunces 400 | `SOFT 100`, `opsz 96`, −0.022em |
+| Text and annotations | Fraunces 400, roman and italic | Italic is the caption/aside voice |
+| Labels and figures (`.label`, `.figure`) | **DM Mono** | 11px, uppercase, +0.13em; tabular numerals |
 
-Sizes are fluid `clamp()` values; the hero name is fitted to the measure in JS.
+Display type appears two ways: in ink on a sheet, or **cut out** (`.cutout`) —
+cream with a hard shadow, laid straight on the map like a masthead. The hero
+name is fitted to the measure in JS.
 
-## Layout
+## Cut paper
 
-- 12 columns on desktop, 4 on mobile; one page gutter, `--pad`.
-- Every section opens the same way (`SectionHead`): a rule, `§ 0N` and a tally
-  in mono, then a one-word title in display.
-- Hairlines, not boxes. No cards, no shadows, no rounded corners. The one
-  exception is the plate that trails the cursor, which is a physical object.
-- A red margin rule runs the full height of the page, like ruled paper.
+`Paper` is the one container. It draws its sheet on a pseudo-element so the
+torn-edge filter (`#torn`, defined once in the layout) never touches the text,
+adds paper grain and a soft shadow, and takes a `tilt` in degrees — nothing in
+a collage sits square. Variants are only colour (`sheet`) and height off the
+table (`flat`).
 
-## Imagery
+- **Sheets** carry sections (Premise, Built, Read, Citations).
+- **Tags** carry nav, stack items, links. They lift and twist on hover.
+- **Spines** are the reading list: bands of colour, like the land outside.
+- **Ring discs** are the pursuits: tree rounds cut from paper, one irregular
+  ring after another, laid directly on the map with a caption scrap tucked
+  under each.
+- No cards, no rounded rectangles, no glass.
 
-- **`Landscape`** — a fragment shader, not an image file. Four ridges, a sky
-  wash, a sun, dry-brushed water, with pigment pooling at wet edges,
-  granulation and paper grain. It paints itself in (pencil underdrawing first,
-  then the washes bloom), the sun sets as the hero scrolls away, and it returns
-  above the footer as the same view by moonlight.
-- **`Swatch`** — a single brushstroke built from SVG filters; one pigment per
-  pursuit.
-- **Fig. 1 (`OddsSim`)** — the feature project explained as something you can
-  operate: four simulated books, two dials, arbitrage windows in red.
-- Project plates are labelled empty frames until real images exist.
+## The map
 
-## Motion principles
+Everything is computed per pixel in `RiverMap`; there is no image file.
 
-1. **Scroll plays the width axis.** Archivo's `wdth` is the site's one signature
-   move: the hero name condenses and its letters drift apart as you leave;
-   section titles open from condensed to expanded as they arrive; rows stretch
-   on hover. Nothing else about type animates.
-2. **The picture has a clock.** Paint-in on arrival, sunset on scroll, night at
-   the end. Pointer movement only nudges parallax.
-3. **Reveal once, quietly.** Content rises 28px and fades in a single time,
-   `expo.out`, staggered by siblings. Rules draw left to right. No bounces, no
-   loops except the interests ticker, which leans on scroll velocity and
-   settles.
-4. **Interaction should explain something.** The sim's dials, the footnote
-   tooltips, the accordion — each shows more of the content, not more effect.
+- The river's course is a sum of sines in page space (`src/lib/river.ts`
+  mirrors it for the birds). Above the confluence it splits into two
+  tributaries; near the footer the channel opens until it is all sea.
+- Land is banded by distance from the water and ringed around nine hills,
+  blended so rings and strata flow into each other.
+- Each band gets its own density, streaks along the stroke, dry-brush gaps
+  where paper shows through, and paper tooth over everything.
+- `data-confluence` (on the hero) and `data-sea` (on the footer) tell the map
+  where those two events happen, so layout changes move the geography.
 
-## Accessibility & performance
+## Motion and interaction
 
-- `prefers-reduced-motion`: no loader, no scroll-driven type, no reveals; the
-  painting renders one finished frame; the sim starts paused; the ticker
-  becomes a scrollable row. Everything is visible without animation.
-- Semantic landmarks, a skip link, real buttons for disclosures, `inert` on
-  closed panels, footnotes that link both ways, visible focus rings in `pen`.
-- Text colours meet WCAG AA on their grounds.
-- Three.js loads lazily after first paint; both canvases pause off-screen and
-  cap DPR at 1.5. The loader hides itself with CSS if JS never runs.
+1. **The paint arrives from the water.** On load, colour spreads outward from
+   the river until the map is full; the name's letters tumble up into place.
+2. **Scrolling is travel.** The map moves 1:1 with the page; the birds hold a
+   V a third of the way down the screen and bank with the channel.
+3. **Everything can be touched.** The pointer presses a soft dent into the
+   bands. Birds scatter from it and drift back. Tags lift, spines rise and
+   their neighbours step back, ring discs turn, a paper plate trails the
+   cursor over the project index and swings with its direction.
+4. **Paper is put down, not faded in.** Sheets slide up and settle from a
+   slightly crooked angle with a little overshoot. Small pieces rise in
+   sequence. Nothing loops except the birds' wings and the interests ribbon,
+   which leans on scroll speed and settles.
+5. **Interaction should explain something.** Fig. 1 lets you turn latency and
+   noise and watch arbitrage appear; footnotes open in place.
+
+## Accessibility and performance
+
+- `prefers-reduced-motion`: no paint-in, no entrances, no wing-flap or drift;
+  the map renders still frames on scroll only; the sim starts paused; the
+  ribbon becomes a scrollable row. Everything is visible without animation.
+- Body text always sits on paper, never on the map. Cut-out type is large
+  display only and carries a hard shadow for separation.
+- Semantic landmarks, skip link, real buttons and links, visible focus rings,
+  footnotes that link both ways. The map and birds are `aria-hidden`.
+- One WebGL context. Three.js loads after first paint; DPR is capped at 1.25
+  on desktop and 1.5 on phones; rendering pauses when the tab is hidden.
+  Intro timing is wall-clock, so a throttled tab still ends fully painted.
 
 ## Content
 
 All copy lives in `src/content/site.ts`. Anything marked `placeholder: true`
-(or an empty `ERRATA` list, or a pursuit with no blurb) renders with a dashed
-red **PLACEHOLDER** tag so it can't be mistaken for real content.
+(or a pursuit with no blurb) renders with a dashed vermilion **PLACEHOLDER**
+tag so it can't be mistaken for real content.

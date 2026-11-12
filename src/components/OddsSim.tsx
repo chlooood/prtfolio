@@ -20,10 +20,10 @@ const MARGIN = 0.05;
 const WINDOW = 150;
 const TICK_MS = 150;
 
-const INK = "#191c12";
-const PEN = "#c4320f";
-const RULE = "rgba(25,28,18,0.16)";
-const MUTED = "#5f6150";
+const INK = "#221a17";
+const PEN = "#c7401f";
+const RULE = "rgba(34,26,23,0.16)";
+const MUTED = "#6b5d50";
 
 function mulberry32(a: number) {
   return () => {
@@ -231,7 +231,7 @@ export function OddsSim() {
     <div ref={wrapRef} className="figure text-[0.8125rem]">
       <div className="flex items-baseline justify-between border-b border-ink pb-2">
         <p className="label">Home v. Away — four books</p>
-        <p className={`label ${arb ? "text-pen" : "text-muted"}`} aria-hidden="true">
+        <p className={`label ${arb ? "text-vermilion" : "text-muted"}`} aria-hidden="true">
           {arb ? `Arbitrage +${edge.toFixed(2)}%` : "No arbitrage"}
         </p>
       </div>
@@ -257,10 +257,10 @@ export function OddsSim() {
               <tr key={b} className="border-t border-rule">
                 <th scope="row" className="py-2 text-left font-normal">{b}</th>
                 <td className="py-2 text-right text-muted">{Math.round(LAG[i] * latency)}t</td>
-                <td className={`py-2 text-right ${bh ? (arb ? "text-pen" : "underline underline-offset-4") : ""}`}>
+                <td className={`py-2 text-right ${bh ? (arb ? "text-vermilion" : "underline underline-offset-4") : ""}`}>
                   {q ? q.home.toFixed(3) : "—"}
                 </td>
-                <td className={`py-2 text-right ${ba ? (arb ? "text-pen" : "underline underline-offset-4") : ""}`}>
+                <td className={`py-2 text-right ${ba ? (arb ? "text-vermilion" : "underline underline-offset-4") : ""}`}>
                   {q ? q.away.toFixed(3) : "—"}
                 </td>
               </tr>
@@ -281,7 +281,7 @@ export function OddsSim() {
       <dl className="grid grid-cols-3 gap-x-4 border-b border-rule py-3">
         <div>
           <dt className="label text-muted">Σ implied</dt>
-          <dd className={`mt-1 text-lg ${arb ? "text-pen" : ""}`}>
+          <dd className={`mt-1 text-lg ${arb ? "text-vermilion" : ""}`}>
             {snap ? (snap.sum * 100).toFixed(2) : "—"}%
           </dd>
         </div>

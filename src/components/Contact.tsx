@@ -1,9 +1,9 @@
 import { CITATIONS, CONTACT, PROFILE } from "@/content/site";
-import { Landscape } from "./Landscape";
+import { Paper } from "./Paper";
 
 /**
- * The end of the page: the footnotes, then the opening view by moonlight with
- * the name set over the night sky. Links live quietly in the last line.
+ * The sea. The river opens out until the map is all water; the links float
+ * on it as cut-out type, and the footnotes come ashore on one last scrap.
  */
 export function Contact() {
   const links = [
@@ -13,28 +13,54 @@ export function Contact() {
   ].filter(Boolean) as { label: string; href: string }[];
 
   return (
-    <footer id="contact" className="bg-ink pt-[clamp(4rem,8vw,7rem)] text-paper">
-      <section
+    <footer id="contact" data-sea className="relative z-10 px-[var(--pad)] pt-[clamp(14rem,70vh,40rem)]">
+      <p className="cutout label">The sea · where to find me</p>
+      <ul className="mt-4">
+        {links.map((l) => (
+          <li key={l.label}>
+            <a
+              href={l.href}
+              {...(l.href.startsWith("http") ? { target: "_blank", rel: "noreferrer noopener" } : {})}
+              className="display cutout group inline-flex items-baseline gap-[0.2em] py-1 text-[clamp(3.5rem,13vw,12rem)]"
+            >
+              <span className="transition-transform duration-700 ease-[var(--ease-spring)] group-hover:-rotate-2 group-hover:translate-x-3 group-focus-visible:translate-x-3">
+                {l.label}
+              </span>
+              <span
+                aria-hidden="true"
+                className="text-[0.45em] transition-transform duration-700 ease-[var(--ease-spring)] group-hover:-translate-y-[0.3em] group-hover:translate-x-[0.3em]"
+              >
+                ↗
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <Paper
+        as="section"
+        data-sheet
+        tilt={-0.7}
         aria-labelledby="citations-title"
-        className="grid grid-cols-4 gap-x-4 px-[var(--pad)] md:grid-cols-12 md:gap-x-6"
+        className="mt-[clamp(4rem,10vw,8rem)] max-w-[46rem] px-[clamp(1.25rem,3vw,2.5rem)] py-[clamp(1.5rem,3vw,2.5rem)]"
       >
-        <h2 id="citations-title" className="label col-span-4 mb-6 text-paper/70 md:col-span-3">
+        <h2 id="citations-title" className="label mb-5 text-muted">
           Citations
         </h2>
-        <ol className="col-span-4 space-y-4 md:col-span-7">
+        <ol className="space-y-3">
           {CITATIONS.map((c, i) => (
             <li
               key={i}
               id={`cite-${i + 1}`}
-              className="grid scroll-mt-24 grid-cols-[2.5rem_1fr] font-serif text-[1.0625rem] leading-snug text-paper/85 target:text-pen-soft"
+              className="grid scroll-mt-28 grid-cols-[2rem_1fr] font-serif text-[1.0625rem] leading-snug target:text-vermilion"
             >
-              <span className="label pt-1 text-pen-soft">{i + 1}</span>
+              <span className="label pt-1 text-vermilion">{i + 1}</span>
               <span>
                 {c}{" "}
                 <a
                   href={`#cite-ref-${i + 1}`}
                   aria-label={`Back to reference ${i + 1}`}
-                  className="label link ml-1 inline-block px-1 py-1 text-paper/70"
+                  className="label link ml-1 inline-block px-1 py-1 text-muted"
                 >
                   ↩
                 </a>
@@ -42,42 +68,16 @@ export function Contact() {
             </li>
           ))}
         </ol>
-      </section>
+      </Paper>
 
-      {/* Plate III — the opening view, twelve hours on. */}
-      <div className="relative mt-[clamp(2rem,5vw,4rem)]">
-        <Landscape phase="night" className="block h-[clamp(22rem,60vw,46rem)] w-full" />
-        <p
-          data-wdth
-          aria-hidden="true"
-          className="display pointer-events-none absolute inset-x-[var(--pad)] top-[8%] text-[clamp(2.75rem,10.4vw,11rem)] text-paper/90"
-        >
-          {PROFILE.firstName} {PROFILE.lastName}
-        </p>
-      </div>
-
-      <div className="label flex flex-col gap-3 border-t border-paper/20 px-[var(--pad)] py-6 text-paper/70 md:flex-row md:items-center md:justify-between">
+      <div className="cutout label mt-[clamp(3rem,8vw,6rem)] flex flex-col gap-2 pb-8 md:flex-row md:justify-between">
         <p>
           © {new Date().getFullYear()} {PROFILE.firstName} {PROFILE.lastName}
         </p>
-        {links.length > 0 && (
-          <ul className="flex gap-6">
-            {links.map((l) => (
-              <li key={l.label}>
-                <a
-                  href={l.href}
-                  className="link py-2 text-paper"
-                  {...(l.href.startsWith("http") ? { target: "_blank", rel: "noreferrer noopener" } : {})}
-                >
-                  {l.label} ↗
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
+        <p>Painted in code · set in Fraunces &amp; DM Mono</p>
         <p>
           <a href="#top" className="link">
-            Back to top ↑
+            Back to the source ↑
           </a>
         </p>
       </div>
