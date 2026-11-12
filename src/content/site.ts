@@ -137,6 +137,8 @@ export type ExchangePlace = {
   x: string;
   y: string;
   description: string;
+  accent: string;
+  motif: string;
   posts: { title: string; href: string }[];
 };
 
@@ -147,6 +149,8 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
     x: "24%",
     y: "52%",
     description: "The starting point. A shelf for dispatches from home, before the next departure.",
+    accent: "#1c4e8a",
+    motif: "01 / Coastlines",
     posts: [],
   },
   {
@@ -155,6 +159,8 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
     x: "73%",
     y: "40%",
     description: "A place-marker ready for stories, photographs, and the little details that make a city memorable.",
+    accent: "#c7401f",
+    motif: "02 / City notes",
     posts: [],
   },
   {
@@ -163,6 +169,8 @@ export const EXCHANGE_PLACES: ExchangePlace[] = [
     x: "65%",
     y: "78%",
     description: "An empty page for wherever the road leads next. Update the place name when the journey begins.",
+    accent: "#2f6b4f",
+    motif: "03 / To be continued",
     posts: [],
   },
 ];
