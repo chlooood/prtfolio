@@ -17,6 +17,7 @@ entries show on the page with a red **PLACEHOLDER** tag until replaced.
   interactive demo (`OddsSim`, `NdtmFig`, `RunwayFig` are the existing ones);
   without one it is listed in a plain index under the others.
 - Hiking photos: drop files in `public/hiking/` and list them in `photos`.
+- Exchange: edit `EXCHANGE_PLACES` in `src/content/site.ts`; each place has an illustrated map label, a short introduction and optional links to actual dispatches. The archive stays empty until real posts exist.
 
 ## Structure
 
