@@ -2,14 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { NOW, PROFILE } from "@/content/site";
-import { Paper } from "./Paper";
 
 const LINKS = [
-  { href: "#built", label: "Built", sheet: "var(--color-pink)" },
-  { href: "#read", label: "Read", sheet: "var(--color-mustard)" },
-  { href: "#exchange", label: "Exchange", sheet: "var(--color-orange)" },
-  { href: "#off-the-clock", label: "Off the clock", sheet: "var(--color-paper)" },
-  { href: "#contact", label: "Find me", sheet: "var(--color-paper)" },
+  { href: "#built", label: "Built" },
+  { href: "#read", label: "Read" },
+  { href: "#exchange", label: "Exchange" },
+  { href: "#off-the-clock", label: "Off the clock" },
+  { href: "#contact", label: "Find me" },
 ];
 
 function useClock(timeZone: string) {
@@ -24,7 +23,7 @@ function useClock(timeZone: string) {
   return time;
 }
 
-/** Navigation as a handful of paper tags pinned along the top of the map. */
+/** Quiet text navigation: the landscape and masthead are the focal points. */
 export function Nav() {
   const [open, setOpen] = useState(false);
   const [tucked, setTucked] = useState(false);
@@ -72,43 +71,33 @@ export function Nav() {
           aria-label="Primary"
           className="label flex h-[var(--nav-h)] items-center justify-between gap-3 px-[var(--pad)]"
         >
-          <Paper as="a" flat tilt={-2} href="#top" className="tag pointer-events-auto">
+          <a href="#top" className="pointer-events-auto font-display text-[1.2rem] font-extrabold tracking-[-.055em] text-ink no-underline md:text-[1.35rem]">
             {PROFILE.firstName} {PROFILE.lastName}
-          </Paper>
+          </a>
 
-          <ul className="hidden items-center gap-2 md:flex">
-            {LINKS.slice(0, 4).map((l, i) => (
+          <ul className="hidden items-center gap-[clamp(.9rem,2vw,2.4rem)] md:flex">
+            {LINKS.slice(0, 4).map((l) => (
               <li key={l.href}>
-                <Paper as="a" flat tilt={i % 2 ? -1.5 : 1.5} sheet={l.sheet} href={l.href} className="tag pointer-events-auto">
-                  {l.label}
-                </Paper>
+                <a className="site-nav-link pointer-events-auto text-ink-2" href={l.href}>{l.label}</a>
               </li>
             ))}
           </ul>
 
-          <div className="hidden items-center gap-2 md:flex">
-            <Paper flat tilt={1} className="tag figure" aria-label={`Local time in ${city}`}>
+          <div className="hidden items-center gap-5 md:flex">
+            <span className="font-mono text-[.65rem] text-ink-2" aria-label={`Local time in ${city}`}>
               {city} <span suppressHydrationWarning>{time ?? "--:--"}</span>
-            </Paper>
-            <Paper as="a" flat tilt={-1.5} sheet="var(--color-ink)" href="#contact" className="tag pointer-events-auto text-cream">
-              Find me
-            </Paper>
+            </span>
+            <a href="#contact" className="site-nav-link pointer-events-auto border-b border-ink/30 font-medium text-ink">Find me</a>
           </div>
 
-          <Paper
-            as="button"
-            flat
-            tilt={2}
-            sheet={open ? "var(--color-vermilion)" : "var(--color-ink)"}
+          <button
             ref={toggleRef}
             type="button"
-            className="tag pointer-events-auto text-cream md:hidden"
             aria-expanded={open}
             aria-controls="menu"
             onClick={() => setOpen((v) => !v)}
-          >
-            {open ? "Close" : "Index"}
-          </Paper>
+            className="pointer-events-auto cursor-pointer border-b border-ink/50 px-1 py-2 font-mono text-sm text-ink md:hidden"
+          >{open ? "Close ×" : "Menu +"}</button>
         </nav>
       </header>
 
