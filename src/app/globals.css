@@ -1,0 +1,289 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f2eee3;
+  --color-paper-2: #e8e2d2;
+  --color-ink: #191c12;
+  --color-ink-2: #45483a;
+  --color-muted: #5f6150;
+  --color-pen: #c4320f;
+  --color-pen-soft: #e9a48f;
+  --color-rule: rgb(25 28 18 / 0.16);
+
+  --font-display: var(--font-archivo), "Arial Black", "Helvetica Neue", sans-serif;
+  --font-serif: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --pad: clamp(1.25rem, 3.4vw, 3.25rem);
+  --nav-h: 3.5rem;
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-paper);
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: var(--nav-h);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-pen);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-pen);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* ── Type roles ──────────────────────────────────────────────────────────── */
+
+/* Display: Archivo on its width axis. --wdth is the one variable the whole
+   site animates; scroll position drives it. */
+.display {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" var(--wdth, 125), "wght" var(--wght, 800);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.86;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.figure {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── The margin rule (ruled-paper red line, doubles as scroll progress) ──── */
+.margin-rule {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--pad) / 2);
+  width: 1px;
+  z-index: 40;
+  pointer-events: none;
+  background: rgb(196 50 15 / 0.22);
+}
+.margin-rule > i {
+  position: absolute;
+  inset: 0;
+  background: var(--color-pen);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+/* ── Placeholder tag ─────────────────────────────────────────────────────── */
+.ph-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-pen);
+  border: 1px dashed var(--color-pen);
+  padding: 0.3em 0.6em;
+  max-width: 100%;
+}
+
+/* ── Links ───────────────────────────────────────────────────────────────── */
+.link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: currentColor;
+  transition: color 0.25s, text-decoration-color 0.25s;
+}
+.link:hover {
+  color: var(--color-pen);
+}
+
+/* ── Footnote markers ────────────────────────────────────────────────────── */
+.cite {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-weight: 500;
+  font-size: max(0.6875rem, 0.42em);
+  letter-spacing: 0;
+  line-height: 1;
+  vertical-align: super;
+  text-transform: none;
+  font-variation-settings: normal;
+}
+.cite > a {
+  color: var(--color-pen);
+  padding: 0.35em 0.3em;
+  margin: -0.35em 0;
+  text-decoration: none;
+}
+.cite > a:hover {
+  text-decoration: underline;
+}
+.cite-tip {
+  display: none;
+}
+@media (hover: hover) and (min-width: 48rem) {
+  .cite-tip {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: calc(100% + 0.6rem);
+    z-index: 30;
+    width: 17rem;
+    padding: 0.75rem 0.875rem;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: normal;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition:
+      opacity 0.2s,
+      transform 0.3s var(--ease-expo),
+      visibility 0.2s;
+    pointer-events: none;
+  }
+  .cite:hover .cite-tip,
+  .cite:focus-within .cite-tip {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+}
+
+/* ── Loader ──────────────────────────────────────────────────────────────── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--color-paper);
+  /* If JS never runs, get out of the way on our own. */
+  animation: loader-out 0.01s linear 3.5s forwards;
+}
+@keyframes loader-out {
+  to {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    display: none;
+  }
+}
+
+/* ── Accordion rows (Worked) ─────────────────────────────────────────────── */
+.fold {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--ease-expo);
+}
+.fold[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.fold > div {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.stretch {
+  transition: font-variation-settings 0.6s var(--ease-expo);
+}
+
+/* ── Bookshelf dimming ───────────────────────────────────────────────────── */
+@media (hover: hover) {
+  .shelf:hover .book {
+    opacity: 0.22;
+  }
+  .shelf .book:hover {
+    opacity: 1;
+  }
+}
+.book {
+  transition: opacity 0.35s;
+}
+
+/* ── Range inputs (figure controls) ──────────────────────────────────────── */
+input[type="range"].dial {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1.5rem;
+  background: transparent;
+  cursor: ew-resize;
+}
+input[type="range"].dial::-webkit-slider-runnable-track {
+  height: 1px;
+  background: var(--color-ink);
+}
+input[type="range"].dial::-moz-range-track {
+  height: 1px;
+  background: var(--color-ink);
+}
+input[type="range"].dial::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-top: calc(-0.4375rem + 0.5px);
+  border-radius: 50%;
+  background: var(--color-pen);
+  border: 0;
+}
+input[type="range"].dial::-moz-range-thumb {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background: var(--color-pen);
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

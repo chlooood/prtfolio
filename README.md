@@ -1,16 +1,32 @@
-# React + Vite
+# Chloe Dacey — portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Next.js (App Router) · TypeScript · Tailwind CSS v4 · GSAP · Three.js
 
-Currently, two official plugins are available:
+```bash
+npm install
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Editing
 
-## React Compiler
+Everything the site says is in [`src/content/site.ts`](src/content/site.ts).
+Search it for `TODO` to find what's still waiting on real content; placeholder
+entries show on the page with a red **PLACEHOLDER** tag until replaced.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Project images: drop files in `public/work/` and set `image` on the project.
+- Hiking photos: drop files in `public/hiking/` and list them in `photos`.
 
-## Expanding the Oxlint configuration
+## Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```
+src/app            layout, page, global styles and tokens
+src/components     one file per section, plus Landscape (the painting),
+                   OddsSim (Fig. 1), Swatch, MotionRoot (scroll behaviour)
+src/content        site.ts — all copy
+```
+
+The visual system and interaction principles are documented in
+[`DESIGN.md`](DESIGN.md).
+
+The previous Vite version of this site is kept on the local branch
+`archive/vite-v1`.
