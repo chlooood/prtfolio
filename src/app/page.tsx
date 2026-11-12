@@ -1,6 +1,7 @@
 import { Boats } from "@/components/Boats";
 import { Built } from "@/components/Built";
 import { Contact } from "@/components/Contact";
+import { Exchange } from "@/components/Exchange";
 import { Hero } from "@/components/Hero";
 import { MotionRoot } from "@/components/MotionRoot";
 import { Nav } from "@/components/Nav";
@@ -22,6 +23,7 @@ export default function Home() {
         <Premise />
         <Built />
         <Read />
+        <Exchange />
         <OffClock />
       </main>
       <Contact />
