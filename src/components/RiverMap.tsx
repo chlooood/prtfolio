@@ -14,8 +14,9 @@ import { useEffect, useRef } from "react";
  * at the coast.
  *
  * The map is painted edge to edge at the source and at the sea. Through the
- * middle of the page it thins to a ribbon of colour along the river on clean
- * paper, so the content has room and quiet.
+ * middle of the page it thins to a ribbon of colour along the river on bare
+ * paper, so the content has room and quiet — and that paper is washed with a
+ * passing day: sunrise below the source, clear at noon, sunset at the coast.
  *
  * Everything is computed per pixel; there is no image. The pointer presses a
  * soft dent into the bands, and on load the paint spreads outward from the
@@ -125,21 +126,24 @@ const FRAG = /* glsl */ `
     vec2 q = p + 0.045 * vec2(fbm(p * 1.4 + 1.7), fbm(p * 1.4 + 9.2)) - 0.0225;
 
     // ── Water ────────────────────────────────────────────────────────────
+    // The channel takes only a quarter of the wobble, so it stays close to
+    // the course the boats are steering by (lib/river.ts).
+    vec2 r = mix(p, q, 0.25);
     float e = 0.01;
-    float c = course(q.y, Yc, W);
-    float slope = (course(q.y + e, Yc, W) - course(q.y - e, Yc, W)) / (2.0 * e);
-    float wMain = mix(0.010, 0.026, v);
-    float dRiver = (abs(q.x - c) - wMain) / sqrt(1.0 + slope * slope);
+    float c = course(r.y, Yc, W);
+    float slope = (course(r.y + e, Yc, W) - course(r.y - e, Yc, W)) / (2.0 * e);
+    float wMain = mix(0.013, 0.028, v);
+    float dRiver = (abs(r.x - c) - wMain) / sqrt(1.0 + slope * slope);
 
     // Above the confluence: two tributaries closing on the centre.
-    float u = clamp((Yc - q.y) / Yc, 0.0, 1.0);
+    float u = clamp((Yc - r.y) / Yc, 0.0, 1.0);
     float spread = 0.36 * W * pow(u, 0.7);
-    float c1 = 0.5 * W - spread - 0.03 * W * sin(q.y * 5.0 + 1.0) * u;
-    float c2 = 0.5 * W + spread + 0.03 * W * sin(q.y * 4.3 + 3.0) * u;
+    float c1 = 0.5 * W - spread - 0.03 * W * sin(r.y * 5.0 + 1.0) * u;
+    float c2 = 0.5 * W + spread + 0.03 * W * sin(r.y * 4.3 + 3.0) * u;
     float sl = 0.36 * W * 0.7 * pow(max(u, 0.02), -0.3) / Yc;
     float wTrib = wMain * 0.62;
-    float dTrib = (min(abs(q.x - c1), abs(q.x - c2)) - wTrib) / sqrt(1.0 + sl * sl);
-    float upstream = step(q.y, Yc);
+    float dTrib = (min(abs(r.x - c1), abs(r.x - c2)) - wTrib) / sqrt(1.0 + sl * sl);
+    float upstream = step(r.y, Yc);
     // Upstream the main channel fades out and only the tributaries remain.
     dRiver = mix(dRiver, min(dTrib, dRiver + u * 4.0), upstream);
 
@@ -202,12 +206,25 @@ const FRAG = /* glsl */ `
     // Widening is done by reach, stripe by stripe — never by fading.
     reach += (1.0 - corridor) * 70.0;
     float bare = smoothstep(reach - 0.3, reach, tv + (noise(vec2(along * 9.0, idx)) - 0.5) * 0.55);
-    land = mix(land, paper, bare);
+    // The bare sheet isn't white: it is washed with the light of a day that
+    // passes as you travel — peach at sunrise just below the source, clear
+    // paper through the middle, gold and then rose toward the coast.
+    // The day ends where the coast's full colour takes over again.
+    float day = clamp((ypx - uConf) / max(uSea - 0.9 * uRes.y - uConf, 1.0), 0.0, 1.0);
+    vec3 sky = mix(hex(250.0, 211.0, 188.0), hex(246.0, 226.0, 196.0), smoothstep(0.0, 0.16, day));
+    sky = mix(sky, hex(244.0, 238.0, 224.0), smoothstep(0.12, 0.36, day));
+    sky = mix(sky, hex(247.0, 214.0, 158.0), smoothstep(0.52, 0.74, day));
+    sky = mix(sky, hex(236.0, 152.0, 118.0), smoothstep(0.72, 0.9, day));
+    sky = mix(sky, hex(196.0, 122.0, 132.0), smoothstep(0.88, 1.0, day));
+    // Laid on unevenly, like a wash: a little pooling, a little bloom.
+    sky *= 0.965 + 0.07 * fbm(p * 1.6 + 31.0);
+    sky = mix(sky, sky * vec3(1.03, 0.99, 0.95), smoothstep(0.45, 0.75, fbm(p * 0.7 + 5.0)));
+    land = mix(land, sky, bare);
 
     // ── Water colour: deep blue, lighter threads drifting downstream ─────
     vec3 water = mix(hex(28.0, 78.0, 138.0), hex(22.0, 60.0, 112.0), seaT);
-    float across = (q.x - c) / max(wMain, 0.001);
-    float thread = noise(vec2(across * 2.2 + q.x * 30.0 * seaT, q.y * 9.0 - uTime * 0.22));
+    float across = (r.x - c) / max(wMain, 0.001);
+    float thread = noise(vec2(across * 2.2 + r.x * 30.0 * seaT, r.y * 9.0 - uTime * 0.22));
     // Out at sea the threads calm down so type can sit on the water.
     float calm = 1.0 - 0.55 * seaT;
     water = mix(water, hex(108.0, 164.0, 214.0), smoothstep(0.56, 0.7, thread) * 0.75 * calm);

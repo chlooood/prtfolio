@@ -23,10 +23,10 @@ entries show on the page with a red **PLACEHOLDER** tag until replaced.
 ```
 src/app            layout, page, global styles and tokens
 src/components     one file per section, plus RiverMap (the painted map),
-                   Birds, Paper (cut-paper scraps), the project figures
+                   Boats, Paper (cut-paper scraps), the project figures
                    (OddsSim, NdtmFig, RunwayFig), CutTitle,
                    MotionRoot (scroll behaviour)
-src/lib/river.ts   the river's course, shared by the map and the birds
+src/lib/river.ts   the river's course, shared by the map and the boats
 src/content        site.ts — all copy
 ```
 

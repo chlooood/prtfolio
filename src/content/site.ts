@@ -18,7 +18,7 @@ export const PROFILE = {
   role: "Business & Computer Science",
   school: "UBC Sauder School of Business",
   gradYear: 2029,
-  headline: "Business and Computer Science at UBC — and no, that wasn’t an accident.",
+  headline: "Business and Computer Science at UBC.",
   intro:
     "I like problems that don’t sit still long enough to be filed under one department. Business tells you what matters; code tells you if you’re actually right. I keep score here — what I built, what I read, what I got wrong.",
 };

@@ -42,12 +42,12 @@ Back to front:
 
 1. **The map** (`RiverMap`) — a fixed full-viewport fragment shader that
    scrolls with the page.
-2. **The birds** (`Birds`) — a flock of seven, seen from above.
+2. **The boats** (`Boats`) — four small watercolour sailboats, seen from above.
 3. **The paper** — every piece of content: sheets, tags, spines, ring discs,
    cut-out type.
 4. **The nav** — a handful of paper tags pinned along the top.
 
-Birds fly between the map and the paper, so they never cross text.
+Boats sail between the map and the paper, so they never cross text.
 
 ## Colour
 
@@ -70,7 +70,12 @@ The map uses three eight-colour sets that hand over as you travel: dark
 highland greens, maroon and ochre at the source (so the cream name reads);
 hot vermilion, orange, mustard and pink mid-course; teal, sky, mint and sand
 at the coast. Bands switch set one at a time along a wandering edge, so every
-stripe stays a pure pigment. No gradients anywhere.
+stripe stays a pure pigment.
+
+The bare paper is the one place colour is allowed to drift. It is washed with
+a day that passes as you travel: peach at sunrise just below the source, clear
+paper through the middle, gold and then rose toward the coast. The wash is
+laid on unevenly, like watercolour, and the sheets on top of it stay cream.
 
 Vermilion is the only accent in text: footnote markers, live states,
 placeholders.
@@ -121,7 +126,7 @@ table (`flat`).
 Everything is computed per pixel in `RiverMap`; there is no image file.
 
 - The river's course is a sum of sines in page space (`src/lib/river.ts`
-  mirrors it for the birds). Above the confluence it splits into two
+  mirrors it for the boats). Above the confluence it splits into two
   tributaries; near the footer the channel opens until it is all sea.
 - Land is banded by distance from the water and ringed around nine hills,
   blended so rings and strata flow into each other.
@@ -134,17 +139,19 @@ Everything is computed per pixel in `RiverMap`; there is no image file.
 
 1. **The paint arrives from the water.** On load, colour spreads outward from
    the river until the map is full; the name's letters tumble up into place.
-2. **Scrolling is travel.** The map moves 1:1 with the page; the birds hold a
-   V a third of the way down the screen and bank with the channel.
+2. **Scrolling is travel.** The map moves 1:1 with the page. Each boat keeps
+   its place down the screen and steers by the channel beneath it: two come
+   down each tributary, meet at the confluence, and follow every bend to the
+   sea. The light goes from sunrise to sunset on the way.
 3. **Everything can be touched.** The pointer presses a soft dent into the
-   bands. Birds scatter from it and drift back. Loose scraps — the hero
+   bands. Boats rock harder when it comes near. Loose scraps — the hero
    notes, the open-books note, the ring discs — can be picked up with a mouse
    and left wherever you drop them. Tags lift, spines rise and
    their neighbours step back, ring discs turn, a paper plate trails the
    cursor over the project index and swings with its direction.
 4. **Paper is put down, not faded in.** Sheets slide up and settle from a
    slightly crooked angle with a little overshoot. Small pieces rise in
-   sequence. Nothing loops except the birds' wings and the interests ribbon,
+   sequence. Nothing loops except the boats' gentle rocking and the interests ribbon,
    which leans on scroll speed and settles.
 5. **Interaction should explain something.** Every project gets a figure you
    can operate, built from that project's own rules on made-up numbers:
@@ -161,7 +168,7 @@ Everything is computed per pixel in `RiverMap`; there is no image file.
 - Body text always sits on paper, never on the map. Cut-out type is large
   display only and carries a hard shadow for separation.
 - Semantic landmarks, skip link, real buttons and links, visible focus rings,
-  footnotes that link both ways. The map and birds are `aria-hidden`.
+  footnotes that link both ways. The map and boats are `aria-hidden`.
 - One WebGL context. Three.js loads after first paint; DPR is capped at 1.25
   on desktop and 1.5 on phones; rendering pauses when the tab is hidden.
   Intro timing is wall-clock, so a throttled tab still ends fully painted.
