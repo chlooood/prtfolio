@@ -17,8 +17,8 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const mixRgb = (a: number[], b: number[], t: number) =>
   `rgb(${a.map((v, i) => Math.round(lerp(v, b[i], t))).join(" ")})`;
 
-const LOW = [240, 128, 52]; // at the horizon
-const HIGH = [248, 204, 84]; // overhead
+const LOW = [226, 157, 130]; // muted apricot at the horizon
+const HIGH = [244, 206, 165]; // soft warm light overhead
 
 export function Sun() {
   const ref = useRef<HTMLDivElement>(null);
